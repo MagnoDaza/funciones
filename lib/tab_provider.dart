@@ -90,4 +90,18 @@ class TabProvider with ChangeNotifier {
     myTabs[index].showIcon = showIcon;
     notifyListeners();
   }
+
+  void reorderTabs(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final TabData tab = myTabs.removeAt(oldIndex);
+    myTabs.insert(newIndex, tab);
+    notifyListeners();
+  }
+
+  void updateTabOrder(List<TabData> newOrder) {
+    myTabs = newOrder;
+    notifyListeners();
+  }
 }

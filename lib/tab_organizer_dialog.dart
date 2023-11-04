@@ -1,4 +1,3 @@
-// archivo tab_organizer_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,7 @@ class TabOrganizerDialog extends StatefulWidget {
 }
 
 class _TabOrganizerDialogState extends State<TabOrganizerDialog> {
-  late List<TabData> workingTabs;
+  List<TabData> workingTabs = [];
 
   @override
   void initState() {
@@ -25,8 +24,7 @@ class _TabOrganizerDialogState extends State<TabOrganizerDialog> {
     return AlertDialog(
       title: const Text('Organizar los tabs'),
       content: Container(
-        height: MediaQuery.of(context).size.height *
-            0.5, // Ajusta este valor según tus necesidades
+        height: MediaQuery.of(context).size.height * 0.5,
         child: ReorderableListView(
           onReorder: (oldIndex, newIndex) {
             setState(() {
@@ -56,8 +54,8 @@ class _TabOrganizerDialogState extends State<TabOrganizerDialog> {
         TextButton(
           child: const Text('Confirmar'),
           onPressed: () {
-            Provider.of<TabProvider>(context, listen: false).myTabs =
-                workingTabs;
+            Provider.of<TabProvider>(context, listen: false)
+                .updateTabOrder(workingTabs);
             Fluttertoast.showToast(
               msg: "Cambios guardados",
               toastLength: Toast.LENGTH_SHORT,
