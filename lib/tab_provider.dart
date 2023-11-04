@@ -1,12 +1,10 @@
-//archivo tab_provider.dart
-
 import 'package:flutter/material.dart';
 import 'tab_data.dart';
 
 class TabProvider with ChangeNotifier {
   List<TabData> myTabs = [TabData(text: 'Tab 1', icon: Icons.home)];
   List<TabData> _tempTabs = [];
-  List<TabData> get tempTabs => _tempTabs; // Getter for _tempTabs
+  List<TabData> get tempTabs => _tempTabs;
 
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
@@ -14,14 +12,20 @@ class TabProvider with ChangeNotifier {
   bool get showIcons => _showIcons;
   bool _showIcons = true;
 
-  void addTab(String name, IconData icon) {
-    myTabs.add(TabData(text: name, icon: icon));
+  void addTab(String name, IconData icon, {double tabWidth = 100.0}) {
+    myTabs.add(TabData(text: name, icon: icon, tabWidth: tabWidth));
     notifyListeners();
   }
 
-  void updateTab(int index, String name, IconData icon) {
-    myTabs[index].text = name;
-    myTabs[index].icon = icon;
+  void updateTab(int index, String name, IconData icon,
+      {double tabWidth = 100.0}) {
+    myTabs[index] =
+        myTabs[index].copyWith(text: name, icon: icon, tabWidth: tabWidth);
+    notifyListeners();
+  }
+
+  void updateTabWidth(int index, double width) {
+    myTabs[index].tabWidth = width;
     notifyListeners();
   }
 

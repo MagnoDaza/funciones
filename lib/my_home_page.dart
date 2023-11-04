@@ -1,5 +1,3 @@
-//archivo my_home_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tab_provider.dart';
@@ -22,14 +20,11 @@ class MyHomePage extends StatelessWidget {
                   isScrollable: true,
                   tabs: tabProvider.myTabs
                       .map((tabData) => Container(
-                            width: MediaQuery.of(context).size.width / 5,
+                            width: tabData.tabWidth,
                             child: Tab(
-                              text: tabData.showText
-                                  ? tabData.text
-                                  : null, // Modifica esta línea
-                              icon: tabData.showIcon
-                                  ? Icon(tabData.icon)
-                                  : null, // Modifica esta línea
+                              text: tabData.showText ? tabData.text : null,
+                              icon:
+                                  tabData.showIcon ? Icon(tabData.icon) : null,
                             ),
                           ))
                       .toList(),
@@ -37,7 +32,13 @@ class MyHomePage extends StatelessWidget {
               ),
               body: TabBarView(
                 children: tabProvider.myTabs.map((tabData) {
-                  return Center(child: Text(tabData.text));
+                  return Center(
+                    child: tabData.showText
+                        ? Text(tabData.text)
+                        : tabData.showIcon
+                            ? Icon(tabData.icon)
+                            : Container(),
+                  );
                 }).toList(),
               ),
               floatingActionButton: FloatingActionButton(

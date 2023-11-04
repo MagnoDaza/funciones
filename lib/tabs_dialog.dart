@@ -1,10 +1,9 @@
-// File: tab_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'icon_list.dart';
 import 'tab_provider.dart';
-import 'tab_preview.dart'; // Import TabPreview class
+import 'tab_preview.dart';
 
 class TabDialog extends StatefulWidget {
   final int? tabIndex;
@@ -20,6 +19,7 @@ class _TabDialogState extends State<TabDialog> {
   TextEditingController? _textController;
   IconData? _icon;
   String dropdownValue = 'Mostrar icono y nombre';
+  double _tabWidth = 100; // Valor predeterminado para el ancho del tab
 
   @override
   void initState() {
@@ -33,6 +33,9 @@ class _TabDialogState extends State<TabDialog> {
       _icon = Provider.of<TabProvider>(context, listen: false)
           .myTabs[widget.tabIndex!]
           .icon;
+      _tabWidth = Provider.of<TabProvider>(context, listen: false)
+          .myTabs[widget.tabIndex!]
+          .tabWidth;
     } else {
       _textController = TextEditingController();
       _icon = Icons.home;
@@ -43,63 +46,82 @@ class _TabDialogState extends State<TabDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.isNewTab ? 'Crear un nuevo tab' : 'Editar Tab'),
-      content: Column(
-        children: <Widget>[
-          const SizedBox(height: 15),
-          const Text('Preview', style: TextStyle(fontSize: 14)),
-          if (_textController != null && _icon != null)
-            TabPreview(
-              textController: _textController!,
-              icon: _icon!,
-              showText: dropdownValue != 'Solo el icono',
-              showIcon: dropdownValue != 'Solo el texto',
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 15),
+            Text('Preview', style: TextStyle(fontSize: 14)),
+            if (_textController != null && _icon != null)
+              TabPreview(
+                textController: _textController!,
+                icon: _icon!,
+                showText: dropdownValue != 'Solo el icono',
+                showIcon: dropdownValue != 'Solo el texto',
+                tabWidth: _tabWidth, // Muestra el ancho del tab en tiempo real
+              ),
+            SizedBox(height: 15),
+            Text('Selecciona el icono', style: TextStyle(fontSize: 14)),
+            IconButton(
+              icon: Icon(_icon),
+              onPressed: () async {
+                IconData? selectedIcon = await showDialog<IconData>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return IconList();
+                  },
+                );
+                if (selectedIcon != null) {
+                  setState(() {
+                    _icon = selectedIcon;
+                  });
+                }
+              },
             ),
-          const SizedBox(height: 15),
-          const Text('Selecciona el icono', style: TextStyle(fontSize: 14)),
-          IconButton(
-            icon: Icon(_icon),
-            onPressed: () async {
-              IconData? selectedIcon = await showDialog<IconData>(
-                context: context,
-                builder: (BuildContext context) {
-                  return IconList();
-                },
-              );
-              if (selectedIcon != null) {
+            SizedBox(height: 15),
+            Text('Nombre del Tab', style: TextStyle(fontSize: 14)),
+            TextField(
+              controller: _textController,
+              decoration: InputDecoration(hintText: "Nombre del Tab"),
+            ),
+            SizedBox(height: 15),
+            Text('Mostrar en el tab', style: TextStyle(fontSize: 14)),
+            SizedBox(height: 15),
+            DropdownButton<String>(
+              value: dropdownValue,
+              onChanged: (String? newValue) {
                 setState(() {
-                  _icon = selectedIcon;
+                  dropdownValue = newValue!;
                 });
-              }
-            },
-          ),
-          const SizedBox(height: 15),
-          const Text('Nombre del Tab', style: TextStyle(fontSize: 14)),
-          TextField(
-            controller: _textController,
-            decoration: const InputDecoration(hintText: "Nombre del Tab"),
-          ),
-          const SizedBox(height: 15),
-          const Text('Mostrar en el tab', style: TextStyle(fontSize: 14)),
-          const SizedBox(height: 15),
-          DropdownButton<String>(
-            value: dropdownValue,
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownValue = newValue!;
-              });
-            },
-            items: <String>[
-              'Mostrar icono y nombre',
-              'Solo el texto',
-              'Solo el icono'
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ],
+              },
+              items: <String>[
+                'Mostrar icono y nombre',
+                'Solo el texto',
+                'Solo el icono'
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 15),
+            Text('Tamaño del tab', style: TextStyle(fontSize: 14)),
+            Tooltip(
+              message: 'Desliza para ajustar el tamaño del tab',
+              child: Slider(
+                value: _tabWidth,
+                min: 50,
+                max: 200,
+                onChanged: (double value) {
+                  setState(() {
+                    _tabWidth = value;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: 15),
+          ],
+        ),
       ),
       actions: <Widget>[
         TextButton(
@@ -120,6 +142,7 @@ class _TabDialogState extends State<TabDialog> {
                   tabIndex,
                   _textController!.text,
                   _icon!,
+                  tabWidth: _tabWidth, // Actualiza el ancho del tab al editarlo
                 );
                 Fluttertoast.showToast(
                   msg: "Tab actualizado",
@@ -138,8 +161,9 @@ class _TabDialogState extends State<TabDialog> {
                     gravity: ToastGravity.BOTTOM,
                   );
                 } else {
-                  Provider.of<TabProvider>(context, listen: false)
-                      .addTab(_textController!.text, _icon!);
+                  Provider.of<TabProvider>(context, listen: false).addTab(
+                      _textController!.text, _icon!,
+                      tabWidth: _tabWidth);
                   tabIndex = Provider.of<TabProvider>(context, listen: false)
                           .myTabs
                           .length -
@@ -153,22 +177,21 @@ class _TabDialogState extends State<TabDialog> {
                   FocusScope.of(context).unfocus();
                 }
               }
-
               if (dropdownValue == 'Solo el texto') {
                 Provider.of<TabProvider>(context, listen: false)
                     .updateTabShowIcon(tabIndex!, false);
                 Provider.of<TabProvider>(context, listen: false)
-                    .updateTabShowText(tabIndex, true);
+                    .updateTabShowText(tabIndex!, true);
               } else if (dropdownValue == 'Solo el icono') {
                 Provider.of<TabProvider>(context, listen: false)
                     .updateTabShowIcon(tabIndex!, true);
                 Provider.of<TabProvider>(context, listen: false)
-                    .updateTabShowText(tabIndex, false);
+                    .updateTabShowText(tabIndex!, false);
               } else {
                 Provider.of<TabProvider>(context, listen: false)
                     .updateTabShowIcon(tabIndex!, true);
                 Provider.of<TabProvider>(context, listen: false)
-                    .updateTabShowText(tabIndex, true);
+                    .updateTabShowText(tabIndex!, true);
               }
             } else {
               Fluttertoast.showToast(

@@ -5,12 +5,14 @@ class TabPreview extends StatelessWidget {
   final IconData icon;
   final bool showText;
   final bool showIcon;
+  final double tabWidth; // Agrega este parámetro
 
   const TabPreview({
     required this.textController,
     required this.icon,
     this.showText = true,
     this.showIcon = true,
+    required this.tabWidth, // Añade este parámetro
   });
 
   @override
@@ -19,7 +21,7 @@ class TabPreview extends StatelessWidget {
       valueListenable: textController,
       builder: (context, value, child) {
         return Container(
-          width: MediaQuery.of(context).size.width / 5,
+          width: tabWidth, // Usa el valor de tabWidth
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(5),

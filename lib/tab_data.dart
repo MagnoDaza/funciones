@@ -1,4 +1,4 @@
-//archivo tab_data.dart
+// En tab_data.dart
 
 import 'package:flutter/material.dart';
 
@@ -7,26 +7,29 @@ class TabData {
   IconData icon;
   bool hideName;
   bool hideIcon;
-  bool showText; // Agrega este campo
-  bool showIcon; // Agrega este campo
+  bool showText;
+  bool showIcon;
+  double tabWidth; // Agrega este campo
 
   TabData({
     required this.text,
     required this.icon,
     this.hideName = false,
     this.hideIcon = false,
-    this.showText = true, // Asegúrate de proporcionar un valor predeterminado
+    this.showText = true,
     this.showIcon = true,
+    this.tabWidth =
+        100.0, // Establece un valor predeterminado para el ancho de la pestaña
   });
 
   void toggleHideName() {
     hideName = !hideName;
-    showText = !hideName; // Actualiza showText cuando hideName cambia
+    showText = !hideName;
   }
 
   void toggleHideIcon() {
     hideIcon = !hideIcon;
-    showIcon = !hideIcon; // Actualiza showIcon cuando hideIcon cambia
+    showIcon = !hideIcon;
   }
 
   TabData copyWith({
@@ -34,12 +37,14 @@ class TabData {
     IconData? icon,
     bool? showText,
     bool? showIcon,
+    double? tabWidth, // Agrega el parámetro tabWidth
   }) {
     return TabData(
       text: text ?? this.text,
       icon: icon ?? this.icon,
       showText: showText ?? this.showText,
       showIcon: showIcon ?? this.showIcon,
+      tabWidth: tabWidth ?? this.tabWidth, // Actualiza el tabWidth
     );
   }
 }
