@@ -24,8 +24,8 @@ class TabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTabWidth(int index, double width) {
-    myTabs[index].tabWidth = width;
+  void updateTabWidth(int index, double tabWidth) {
+    myTabs[index].tabWidth = tabWidth;
     notifyListeners();
   }
 
