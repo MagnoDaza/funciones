@@ -49,8 +49,12 @@ class _TabDialogState extends State<TabDialog> {
         title: Text(widget.isNewTab ? 'Crear un nuevo tab' : 'Editar Tab'),
         content: Column(
           children: <Widget>[
-            const SizedBox(height: 15),
-            const Text('Preview', style: TextStyle(fontSize: 14)),
+            const SizedBox(height: 10),
+            const Text('Preview',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    fontStyle: FontStyle.italic)),
             if (_textController != null && _icon != null)
               TabPreview(
                 textController: _textController!,
@@ -60,7 +64,8 @@ class _TabDialogState extends State<TabDialog> {
                 tabWidth: _tabWidth, // Pasa el ancho del tab
               ),
             const SizedBox(height: 15),
-            const Text('Selecciona el icono', style: TextStyle(fontSize: 14)),
+            const Text('Selecciona el icono',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             IconButton(
               icon: Icon(_icon),
               onPressed: () async {
@@ -78,7 +83,8 @@ class _TabDialogState extends State<TabDialog> {
               },
             ),
             const SizedBox(height: 15),
-            const Text('Nombre del Tab', style: TextStyle(fontSize: 14)),
+            const Text('Nombre del Tab',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             TextField(
               controller: _textController,
               decoration: const InputDecoration(hintText: "Nombre del Tab"),
@@ -105,19 +111,31 @@ class _TabDialogState extends State<TabDialog> {
               }).toList(),
             ),
             const SizedBox(height: 15),
-            Text('Tamaño del tab', style: TextStyle(fontSize: 14)),
-            Tooltip(
-              message: 'Desliza para ajustar el tamaño del tab',
-              child: Slider(
-                value: _tabWidth,
-                min: 50,
-                max: 200,
-                onChanged: (double value) {
-                  setState(() {
-                    _tabWidth = value;
-                  });
-                },
-              ),
+            const Text('Tamaño del tab',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                const SizedBox(width: 8), // Espacio entre el Text y el Slider
+                Expanded(
+                  child: Tooltip(
+                    message: 'Desliza para ajustar el tamaño del tab',
+                    child: Slider(
+                      value: _tabWidth,
+                      min: 50,
+                      max: 200,
+                      onChanged: (double value) {
+                        setState(() {
+                          _tabWidth = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Text(
+                  _tabWidth.toStringAsFixed(0), // Muestra el valor del ancho
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
             ),
             const SizedBox(height: 15),
           ],

@@ -18,16 +18,19 @@ class MyHomePage extends StatelessWidget {
               appBar: AppBar(
                 bottom: TabBar(
                   isScrollable: true,
-                  tabs: tabProvider.myTabs
-                      .map((tabData) => Container(
-                            width: tabData.tabWidth,
-                            child: Tab(
-                              text: tabData.showText ? tabData.text : null,
-                              icon:
-                                  tabData.showIcon ? Icon(tabData.icon) : null,
-                            ),
-                          ))
-                      .toList(),
+                  tabs: tabProvider.myTabs.map((tabData) {
+                    return Container(
+                      width: tabData.tabWidth,
+                      child: Tab(
+                        child: FittedBox(
+                          fit: BoxFit
+                              .scaleDown, // Ajusta el texto si es necesario, pero no me funciona T_T
+                          child: Text(tabData.showText ? tabData.text : ""),
+                        ),
+                        icon: tabData.showIcon ? Icon(tabData.icon) : null,
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               body: TabBarView(
@@ -43,9 +46,11 @@ class MyHomePage extends StatelessWidget {
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TabCreatorPage())),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TabCreatorPage(),
+                  ),
+                ),
                 child: const Icon(Icons.add),
               ),
             ),
