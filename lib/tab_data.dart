@@ -10,10 +10,12 @@ class TabData {
   bool showText;
   bool showIcon;
   double tabWidth; // Agrega este campo
+  bool isDeletable;
 
   TabData({
     required this.text,
     required this.icon,
+    this.isDeletable = true,
     this.hideName = false,
     this.hideIcon = false,
     this.showText = true,

@@ -5,7 +5,9 @@ import 'tab_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TabProvider with ChangeNotifier {
-  List<TabData> myTabs = [TabData(text: 'Tab 1', icon: Icons.home)];
+  List<TabData> myTabs = [
+    TabData(text: 'Result 1', icon: Icons.home, isDeletable: false)
+  ];
   List<TabData> _tempTabs = [];
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
