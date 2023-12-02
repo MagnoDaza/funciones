@@ -27,8 +27,9 @@ class TabPreview extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
           child: Tab(
-            text:
-                showText ? (value.text.isEmpty ? 'inicial' : value.text) : null,
+            text: showText
+                ? (value.text.isEmpty ? 'Result 1' : value.text)
+                : null,
             icon: showIcon ? Icon(icon) : null,
           ),
         );

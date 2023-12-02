@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tab_provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ShowHideTabsPage extends StatelessWidget {
   const ShowHideTabsPage({Key? key}) : super(key: key);
@@ -31,8 +30,8 @@ class ShowHideTabsPage extends StatelessWidget {
                       ExpansionPanel(
                         canTapOnHeader: true,
                         headerBuilder: (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: const Text('Configuración de visualización'),
+                          return const ListTile(
+                            title: Text('Configuración de visualización'),
                             subtitle: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -51,7 +50,6 @@ class ShowHideTabsPage extends StatelessWidget {
                               ],
                             ),
                           );
-                          ;
                         },
                         body: Wrap(
                           children: [
@@ -61,25 +59,19 @@ class ShowHideTabsPage extends StatelessWidget {
                               value: tabProvider.customNamesEnabled,
                               onChanged: (bool value) {
                                 tabProvider.toggleCustomNamesEnabled();
-                                Fluttertoast.showToast(
-                                  msg: tabProvider.customNamesEnabled
-                                      ? "Nombres e iconos personalizados habilitados"
-                                      : "Ahora puedes ocultar todos los nombre o iconos",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                );
+                                tabProvider.showToastOnToggleCustomNames();
                               },
                               subtitle: Text(
                                 tabProvider.customNamesEnabled
                                     ? 'Se muestra el nombre y el icono'
-                                    : 'No se muestra el nombre y el icono.',
+                                    : 'No se muestra el nombre y el icono. Ahora puedes hacer otros cambios',
                               ),
                             ),
                             const SizedBox(height: 15),
-                            Divider(),
+                            const Divider(),
                             const SizedBox(height: 15),
-                            ListTile(
-                              title: const Text('Vista personalizada'),
+                            const ListTile(
+                              title: Text('Vista personalizada'),
                               subtitle: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -143,7 +135,8 @@ class ShowHideTabsPage extends StatelessWidget {
                   const SizedBox(height: 15),
                   const Divider(),
                   const SizedBox(height: 15),
-                  Text('Información', style: TextStyle(color: Colors.grey)),
+                  const Text('Información',
+                      style: TextStyle(color: Colors.grey)),
                   const SizedBox(height: 15),
                 ],
               );

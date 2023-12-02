@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'tab_data.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TabProvider with ChangeNotifier {
   List<TabData> myTabs = [TabData(text: 'Tab 1', icon: Icons.home)];
@@ -60,6 +61,22 @@ class TabProvider with ChangeNotifier {
       _showIcons = true;
     }
     notifyListeners();
+  }
+
+  void showToastOnToggleCustomNames() {
+    Fluttertoast.showToast(
+      msg: customNamesEnabled
+          ? "Nombres e iconos personalizados habilitados"
+          : "Nombres e iconos personalizados deshabilitados",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+
+    // Verificar si el switch está apagado
+    if (!customNamesEnabled) {
+      // Solo activar toggleShowText si el switch está apagado
+      toggleShowText();
+    }
   }
 
   void saveState() {

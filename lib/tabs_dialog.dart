@@ -64,8 +64,12 @@ class _TabDialogState extends State<TabDialog> {
                 tabWidth: _tabWidth, // Pasa el ancho del tab
               ),
             const SizedBox(height: 15),
+            Divider(),
+            const SizedBox(height: 15),
             const Text('Selecciona el icono',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Divider(),
+            const SizedBox(height: 15),
             IconButton(
               icon: Icon(_icon),
               onPressed: () async {
@@ -83,14 +87,20 @@ class _TabDialogState extends State<TabDialog> {
               },
             ),
             const SizedBox(height: 15),
+            Divider(),
             const Text('Nombre del Tab',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Divider(),
+            const SizedBox(height: 15),
             TextField(
               controller: _textController,
               decoration: const InputDecoration(hintText: "Nombre del Tab"),
             ),
             const SizedBox(height: 15),
-            const Text('Mostrar en el tab', style: TextStyle(fontSize: 14)),
+            Divider(),
+            const SizedBox(height: 15),
+            const Text('Mostrar en el tab',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 15),
             DropdownButton<String>(
               value: dropdownValue,
@@ -110,6 +120,8 @@ class _TabDialogState extends State<TabDialog> {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 15),
+            Divider(),
             const SizedBox(height: 15),
             const Text('Tamaño del tab',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -133,7 +145,7 @@ class _TabDialogState extends State<TabDialog> {
                 ),
                 Text(
                   _tabWidth.toStringAsFixed(0), // Muestra el valor del ancho
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
