@@ -51,9 +51,8 @@ class TabProvider with ChangeNotifier {
 
   void toggleCustomNamesEnabled() {
     _customNamesEnabled = !_customNamesEnabled;
+
     if (_customNamesEnabled) {
-      showText = true;
-      _showIcons = true;
       for (TabData tab in myTabs) {
         tab.showText = true;
         tab.showIcon = true;
@@ -62,6 +61,7 @@ class TabProvider with ChangeNotifier {
       showText = true;
       _showIcons = true;
     }
+
     notifyListeners();
   }
 
