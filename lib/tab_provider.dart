@@ -1,16 +1,28 @@
+// File: tab_provider.dart
+
 import 'package:flutter/material.dart';
 import 'tab_data.dart';
 
 class TabProvider with ChangeNotifier {
   List<TabData> myTabs = [TabData(text: 'Tab 1', icon: Icons.home)];
   List<TabData> _tempTabs = [];
-  List<TabData> get tempTabs => _tempTabs;
-
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
   bool showText = true;
   bool get showIcons => _showIcons;
   bool _showIcons = true;
+  int _expandedPanelIndex = -1; // Índice del panel expandido
+
+  int get expandedPanelIndex => _expandedPanelIndex;
+
+  void togglePanelExpansion(int index) {
+    _expandedPanelIndex = (_expandedPanelIndex == index) ? -1 : index;
+    notifyListeners();
+  }
+
+  bool isPanelExpanded(int index) {
+    return _expandedPanelIndex == index;
+  }
 
   void addTab(String name, IconData icon, {double tabWidth = 100.0}) {
     myTabs.add(TabData(text: name, icon: icon, tabWidth: tabWidth));
