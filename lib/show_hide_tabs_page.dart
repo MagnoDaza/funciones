@@ -1,5 +1,3 @@
-// File: show_hide_tabs_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tab_provider.dart';
@@ -31,7 +29,9 @@ class ShowHideTabsPage extends StatelessWidget {
                     },
                     children: [
                       ExpansionPanel(
-                        body: Column(
+                        canTapOnHeader:
+                            true, // Habilitar el tap en el encabezado
+                        body: Wrap(
                           children: [
                             const SizedBox(height: 15),
                             SwitchListTile(
@@ -58,20 +58,16 @@ class ShowHideTabsPage extends StatelessWidget {
                         headerBuilder: (BuildContext context, bool isExpanded) {
                           return ListTile(
                             title: const Text(
-                                'Configuración general de visualización'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              'Configuración general de visualización',
+                            ),
+                            subtitle: Wrap(
                               children: [
-                                Row(children: [
-                                  const Icon(Icons.info, color: Colors.grey),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                      'Los cambios realizados en esta sección solo afectan a los DinamicsTabs creados anteriormente.',
-                                      maxLines:
-                                          3, // Puedes ajustar esto según tus necesidades
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(color: Colors.grey)),
-                                ]),
+                                const Icon(Icons.info, color: Colors.grey),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Los cambios realizados en esta sección solo afectan a los DinamicsTabs creados anteriormente.',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
                               ],
                             ),
                           );
@@ -79,7 +75,9 @@ class ShowHideTabsPage extends StatelessWidget {
                         isExpanded: tabProvider.isPanelExpanded(0),
                       ),
                       ExpansionPanel(
-                        body: Column(
+                        canTapOnHeader:
+                            true, // Habilitar el tap en el encabezado
+                        body: Wrap(
                           children: [
                             RadioListTile(
                               title: const Text('Mostrar texto'),
@@ -118,12 +116,14 @@ class ShowHideTabsPage extends StatelessWidget {
                         headerBuilder: (BuildContext context, bool isExpanded) {
                           return ListTile(
                             title: const Text('Configuración de visualización'),
-                            subtitle: Row(
+                            subtitle: Wrap(
                               children: [
                                 const Icon(Icons.info, color: Colors.grey),
                                 const SizedBox(width: 8),
-                                Text('Información adicional',
-                                    style: TextStyle(color: Colors.grey)),
+                                Text(
+                                  'Información adicional',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
                               ],
                             ),
                           );
