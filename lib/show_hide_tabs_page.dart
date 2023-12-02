@@ -1,4 +1,5 @@
 // File: show_hide_tabs_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tab_provider.dart';
@@ -15,19 +16,19 @@ class ShowHideTabsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.all(16.0),
           child: Consumer<TabProvider>(
             builder: (context, tabProvider, child) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 15),
-                  const Text("Mostrar u ocultar nombre"),
-                  ShowHideSwitch(),
                   const SizedBox(height: 15),
                   const Divider(),
                   const SizedBox(height: 15),
-                  const Text('Nombres e iconos personalizados',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    'Nombres e iconos personalizados',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 15),
                   SwitchListTile(
                     title: const Text('Nombre e icono personalizado'),
@@ -42,43 +43,75 @@ class ShowHideTabsPage extends StatelessWidget {
                         gravity: ToastGravity.BOTTOM,
                       );
                     },
+                    subtitle: Text(
+                      tabProvider.customNamesEnabled
+                          ? 'Se muestra el nombre y el icono'
+                          : 'No se muestra el nombre e icono',
+                    ),
                   ),
                   const SizedBox(height: 20),
+                  ExpansionPanelList(
+                    elevation: 1,
+                    expandedHeaderPadding: EdgeInsets.zero,
+                    expansionCallback: (int index, bool isExpanded) {},
+                    children: [
+                      ExpansionPanel(
+                        body: Column(
+                          children: [
+                            RadioListTile(
+                              title: const Text('Mostrar texto'),
+                              subtitle: Text(
+                                tabProvider.showText
+                                    ? 'Se muestra todo'
+                                    : 'No se muestra todo',
+                              ),
+                              value: true,
+                              groupValue: tabProvider.showText,
+                              onChanged: tabProvider.customNamesEnabled
+                                  ? null
+                                  : (bool? value) {
+                                      tabProvider.toggleShowText();
+                                      tabProvider.toggleShowIcons();
+                                    },
+                            ),
+                            RadioListTile(
+                              title: const Text('Mostrar icono'),
+                              subtitle: Text(
+                                tabProvider.showText
+                                    ? 'Se muestra todo'
+                                    : 'No se muestra todo',
+                              ),
+                              value: false,
+                              groupValue: tabProvider.showText,
+                              onChanged: tabProvider.customNamesEnabled
+                                  ? null
+                                  : (bool? value) {
+                                      tabProvider.toggleShowText();
+                                      tabProvider.toggleShowIcons();
+                                    },
+                            ),
+                          ],
+                        ),
+                        headerBuilder: (BuildContext context, bool isExpanded) {
+                          return ListTile(
+                            title: const Text('Configuración de visualización'),
+                          );
+                        },
+                        isExpanded: true,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  const Divider(),
+                  const SizedBox(height: 15),
+                  Text('Información', style: TextStyle(color: Colors.grey)),
+                  const SizedBox(height: 15),
                 ],
               );
             },
           ),
         ),
       ),
-    );
-  }
-}
-
-class ShowHideSwitch extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<TabProvider>(
-      builder: (context, tabProvider, child) {
-        return SwitchListTile(
-          title: Text(tabProvider.showText
-              ? 'Se muestran todos los nombres de los tabs'
-              : 'Se muestran todos los iconos'),
-          value: tabProvider.showText,
-          onChanged: tabProvider.customNamesEnabled
-              ? null
-              : (bool value) {
-                  tabProvider.toggleShowText();
-                  tabProvider.toggleShowIcons();
-                  Fluttertoast.showToast(
-                    msg: tabProvider.showText
-                        ? "Nombre mostrado"
-                        : "Icono mostrado",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                  );
-                },
-        );
-      },
     );
   }
 }

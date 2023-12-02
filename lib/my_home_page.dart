@@ -22,11 +22,7 @@ class MyHomePage extends StatelessWidget {
                     return Container(
                       width: tabData.tabWidth,
                       child: Tab(
-                        child: FittedBox(
-                          fit: BoxFit
-                              .scaleDown, // Ajusta el texto si es necesario, pero no me funciona T_T
-                          child: Text(tabData.showText ? tabData.text : ""),
-                        ),
+                        text: tabData.showText ? tabData.text : null,
                         icon: tabData.showIcon ? Icon(tabData.icon) : null,
                       ),
                     );
