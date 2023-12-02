@@ -29,8 +29,30 @@ class ShowHideTabsPage extends StatelessWidget {
                     },
                     children: [
                       ExpansionPanel(
-                        canTapOnHeader:
-                            true, // Habilitar el tap en el encabezado
+                        canTapOnHeader: true,
+                        headerBuilder: (BuildContext context, bool isExpanded) {
+                          return ListTile(
+                            title: const Text('Configuración de visualización'),
+                            subtitle: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.info, color: Colors.grey),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Wrap(
+                                    children: [
+                                      Text(
+                                        'Los cambios solo afectan a los DinamicsTabs creados con anterioridad.',
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          ;
+                        },
                         body: Wrap(
                           children: [
                             const SizedBox(height: 15),
@@ -42,7 +64,7 @@ class ShowHideTabsPage extends StatelessWidget {
                                 Fluttertoast.showToast(
                                   msg: tabProvider.customNamesEnabled
                                       ? "Nombres e iconos personalizados habilitados"
-                                      : "Nombres e iconos personalizados deshabilitados",
+                                      : "Ahora puedes ocultar todos los nombre o iconos",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                 );
@@ -50,35 +72,33 @@ class ShowHideTabsPage extends StatelessWidget {
                               subtitle: Text(
                                 tabProvider.customNamesEnabled
                                     ? 'Se muestra el nombre y el icono'
-                                    : 'No se muestra el nombre y el icono. Ahora puedes hacer otros cambios',
+                                    : 'No se muestra el nombre y el icono.',
                               ),
                             ),
-                          ],
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: const Text(
-                              'Configuración general de visualización',
+                            const SizedBox(height: 15),
+                            Divider(),
+                            const SizedBox(height: 15),
+                            ListTile(
+                              title: const Text('Vista personalizada'),
+                              subtitle: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.info, color: Colors.grey),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Wrap(
+                                      children: [
+                                        Text(
+                                          'Ahora puedes que hacer tus potenciales clientes solo vean el solo el icono o el texto del DinamicTabs.',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            subtitle: Wrap(
-                              children: [
-                                const Icon(Icons.info, color: Colors.grey),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Los cambios realizados en esta sección solo afectan a los DinamicsTabs creados anteriormente.',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        isExpanded: tabProvider.isPanelExpanded(0),
-                      ),
-                      ExpansionPanel(
-                        canTapOnHeader:
-                            true, // Habilitar el tap en el encabezado
-                        body: Wrap(
-                          children: [
+                            const SizedBox(height: 15),
                             RadioListTile(
                               title: const Text('Mostrar texto'),
                               subtitle: Text(
@@ -113,25 +133,13 @@ class ShowHideTabsPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: const Text('Configuración de visualización'),
-                            subtitle: Wrap(
-                              children: [
-                                const Icon(Icons.info, color: Colors.grey),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Información adicional',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        isExpanded: tabProvider.isPanelExpanded(1),
+                        isExpanded: tabProvider.isPanelExpanded(0),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 15),
+                  const Divider(),
+                  const SizedBox(height: 15),
                   const SizedBox(height: 15),
                   const Divider(),
                   const SizedBox(height: 15),
