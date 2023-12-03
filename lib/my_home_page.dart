@@ -18,19 +18,12 @@ class MyHomePage extends StatelessWidget {
               appBar: AppBar(
                 bottom: TabBar(
                   isScrollable: true,
-                  indicatorWeight: 2.0,
+                  indicatorSize: TabBarIndicatorSize.label,
                   tabs: tabProvider.myTabs.map((tabData) {
-                    return Container(
-                      width: tabData.tabWidth,
-                      child: Tab(
-                        text: tabData.showText ? tabData.text : null,
-                        icon: tabData.showIcon ? Icon(tabData.icon) : null,
-                      ),
-                    );
+                    return _buildTab(tabData.text, tabData.icon);
                   }).toList(),
-                  indicatorSize: TabBarIndicatorSize
-                      .label, // Ajusta el tamaño del indicador al tamaño de la etiqueta
                 ),
+                title: Text('Tabs Demo'),
               ),
               body: TabBarView(
                 children: tabProvider.myTabs.map((tabData) {
@@ -58,6 +51,16 @@ class MyHomePage extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTab(String text, IconData icon) {
+    return Tab(
+      icon: Icon(icon),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(text),
       ),
     );
   }

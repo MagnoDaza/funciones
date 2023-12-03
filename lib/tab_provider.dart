@@ -4,9 +4,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class TabProvider with ChangeNotifier {
   List<TabData> myTabs = [
-    TabData(text: 'Result 1', icon: Icons.home, isDeletable: false)
+    TabData(
+      text: 'Result 1',
+      icon: Icons.home,
+      isDeletable: false,
+      indicatorSize: 'Result 1'
+          .length
+          .toDouble(), // Ajusta el tamaño del indicador al tamaño del texto
+    )
   ];
 
+  // Agrega un ValueNotifier para el ancho del tab
+  ValueNotifier<double> tabWidthNotifier = ValueNotifier<double>(100.0);
   List<TabData> _tempTabs = [];
 
   bool get customNamesEnabled => _customNamesEnabled;
@@ -41,6 +50,14 @@ class TabProvider with ChangeNotifier {
       tabWidth: tabWidth ?? 50.0,
     ));
     notifyListeners();
+    Fluttertoast.showToast(
+      msg: "El largo del indicador del tab activo es ${myTabs.last.textSize}",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+
+    // Actualiza el ValueNotifier con el nuevo ancho del tab
+    tabWidthNotifier.value = myTabs.last.tabWidth;
   }
 
   void updateTab(int index, String name, IconData icon,

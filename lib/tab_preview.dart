@@ -22,34 +22,39 @@ class TabPreview extends StatelessWidget {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: textController,
       builder: (context, value, child) {
-        final text = showText ? value.text : null;
+        final text = showText
+            ? (value.text.isEmpty ? 'Nombre del tab' : value.text)
+            : null;
+        final tabIcon = showIcon
+            ? icon
+            : Icons
+                .tab; // Icono predeterminado si no se ha seleccionado ninguno
         final tabWidth = text != null
             ? text.length * 10.0
             : 100.0; // Ajusta el ancho del tab según la longitud del texto
-        return Container(
-          width: tabWidth,
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showIcon) Icon(icon, size: 24),
-              if (showText && showIcon) const SizedBox(height: 8),
-              if (showText)
-                Text(
-                  (text?.isEmpty ?? true) ? 'Result 1' : text!,
-                  style: TextStyle(fontSize: textSize),
+        return DefaultTabController(
+          length: 1,
+          child: Container(
+            width: tabWidth,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TabBar(
+                  tabs: [
+                    Tab(
+                      icon: showIcon ? Icon(tabIcon, size: 24) : null,
+                      child: showText
+                          ? FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(text ?? ''),
+                            )
+                          : null,
+                    ),
+                  ],
                 ),
-              if (showText && text != null && text.isNotEmpty)
-                Container(
-                  height: indicatorSize,
-                  width: double.infinity,
-                  color: Colors.blue,
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },
