@@ -11,6 +11,9 @@ class TabData {
   bool showIcon;
   double tabWidth; // Agrega este campo
   bool isDeletable;
+  double textSize;
+  double containerSize;
+  double indicatorSize;
 
   TabData({
     required this.text,
@@ -22,6 +25,10 @@ class TabData {
     this.showIcon = true,
     this.tabWidth =
         100.0, // Establece un valor predeterminado para el ancho de la pestaña
+
+    this.textSize = 50, // Tamaño predeterminado del texto
+    this.containerSize = 100, // Tamaño predeterminado del contenedor
+    this.indicatorSize = 50, // Tamaño predeterminado del indicador
   });
 
   void toggleHideName() {
@@ -40,6 +47,9 @@ class TabData {
     bool? showText,
     bool? showIcon,
     double? tabWidth, // Agrega el parámetro tabWidth
+    double? textSize,
+    double? containerSize,
+    double? indicatorSize,
   }) {
     return TabData(
       text: text ?? this.text,
@@ -47,6 +57,10 @@ class TabData {
       showText: showText ?? this.showText,
       showIcon: showIcon ?? this.showIcon,
       tabWidth: tabWidth ?? this.tabWidth, // Actualiza el tabWidth
+      containerSize: containerSize ?? this.containerSize,
+      indicatorSize: indicatorSize ?? this.indicatorSize,
+      isDeletable: this.isDeletable,
+      textSize: textSize ?? this.textSize,
     );
   }
 }

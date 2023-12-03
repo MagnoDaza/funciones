@@ -5,6 +5,7 @@ class TabPreview extends StatelessWidget {
   final IconData icon;
   final bool showText;
   final bool showIcon;
+  final double textSize;
   final double tabWidth;
 
   const TabPreview({
@@ -12,6 +13,7 @@ class TabPreview extends StatelessWidget {
     required this.icon,
     this.showText = true,
     this.showIcon = true,
+    required this.textSize,
     required this.tabWidth,
   });
 
@@ -20,17 +22,37 @@ class TabPreview extends StatelessWidget {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: textController,
       builder: (context, value, child) {
+        final text = showText ? value.text : null;
+
+        // Calcula el ancho del texto
+        final textPainter = TextPainter(
+          text: TextSpan(text: text, style: TextStyle(fontSize: textSize)),
+          textDirection: TextDirection.ltr,
+        )..layout(minWidth: 0, maxWidth: double.infinity);
+
+        final containerWidth = textPainter
+            .size.width; // Usa el ancho del texto como el ancho del contenedor
+        final indicatorWidth = textPainter
+            .size.width; // Usa el ancho del texto como el ancho del indicador
+
         return Container(
-          width: tabWidth,
+          width: containerWidth,
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Tab(
-            text: showText
-                ? (value.text.isEmpty ? 'Result 1' : value.text)
-                : null,
-            icon: showIcon ? Icon(icon) : null,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showIcon) Icon(icon, size: 24),
+              if (showText && showIcon) const SizedBox(height: 8),
+              if (showText)
+                Text(
+                  (text?.isEmpty ?? true) ? 'Result 1' : text!,
+                  style: TextStyle(fontSize: textSize),
+                ),
+            ],
           ),
         );
       },
