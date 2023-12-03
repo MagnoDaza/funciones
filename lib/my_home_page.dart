@@ -1,4 +1,3 @@
-//file myhomepage.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tab_provider.dart';
@@ -19,6 +18,8 @@ class MyHomePage extends StatelessWidget {
               appBar: AppBar(
                 bottom: TabBar(
                   isScrollable: true,
+                  indicatorWeight:
+                      2.0, // Ajusta el tamaño del indicador según tus necesidades
                   tabs: tabProvider.myTabs.map((tabData) {
                     return Container(
                       width: tabData.tabWidth,
