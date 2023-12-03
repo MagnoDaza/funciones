@@ -20,7 +20,6 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Creador de DinamicsTabs'),
-        backgroundColor: Colors.blue,
         actions: [
           Tooltip(
             message: 'Información general',
