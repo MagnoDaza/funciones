@@ -1,5 +1,3 @@
-// File: tab_provider.dart
-
 import 'package:flutter/material.dart';
 import 'tab_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,16 +6,22 @@ class TabProvider with ChangeNotifier {
   List<TabData> myTabs = [
     TabData(text: 'Result 1', icon: Icons.home, isDeletable: false)
   ];
+
   List<TabData> _tempTabs = [];
+
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
+
   bool showText = true;
+
   bool get showIcons => _showIcons;
   bool _showIcons = true;
-  int _expandedPanelIndex = -1; // Índice del panel expandido
-  bool _isSliderEnabled = true; // Agrega esta línea
 
-  bool get isSliderEnabled => _isSliderEnabled; // Agrega este método
+  int _expandedPanelIndex = -1;
+
+  bool _isSliderEnabled = true;
+
+  bool get isSliderEnabled => _isSliderEnabled;
 
   int get expandedPanelIndex => _expandedPanelIndex;
 
@@ -31,7 +35,11 @@ class TabProvider with ChangeNotifier {
   }
 
   void addTab(String name, IconData icon, {double tabWidth = 100.0}) {
-    myTabs.add(TabData(text: name, icon: icon, tabWidth: tabWidth));
+    myTabs.add(TabData(
+      text: name,
+      icon: icon,
+      tabWidth: tabWidth ?? 50.0,
+    ));
     notifyListeners();
   }
 
@@ -54,7 +62,6 @@ class TabProvider with ChangeNotifier {
 
   void toggleCustomNamesEnabled() {
     _customNamesEnabled = !_customNamesEnabled;
-
     if (_customNamesEnabled) {
       for (TabData tab in myTabs) {
         tab.showText = true;
@@ -64,7 +71,6 @@ class TabProvider with ChangeNotifier {
       showText = true;
       _showIcons = true;
     }
-
     notifyListeners();
   }
 
@@ -77,9 +83,7 @@ class TabProvider with ChangeNotifier {
       gravity: ToastGravity.BOTTOM,
     );
 
-    // Verificar si el switch está apagado
     if (!customNamesEnabled) {
-      // Solo activar toggleShowText si el switch está apagado
       toggleShowText();
     }
   }
@@ -137,5 +141,12 @@ class TabProvider with ChangeNotifier {
   void updateTabOrder(List<TabData> newOrder) {
     myTabs = newOrder;
     notifyListeners();
+  }
+
+  double getIndicatorSize(int index) {
+    if (index < 0 || index >= myTabs.length) {
+      return 50.0;
+    }
+    return myTabs[index].indicatorSize;
   }
 }

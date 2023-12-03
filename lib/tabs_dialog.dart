@@ -26,17 +26,12 @@ class _TabDialogState extends State<TabDialog> {
   void initState() {
     super.initState();
     if (widget.tabIndex != null) {
+      var tabProvider = Provider.of<TabProvider>(context, listen: false);
       _textController = TextEditingController(
-        text: Provider.of<TabProvider>(context, listen: false)
-            .myTabs[widget.tabIndex!]
-            .text,
+        text: tabProvider.myTabs[widget.tabIndex!].text,
       );
-      _icon = Provider.of<TabProvider>(context, listen: false)
-          .myTabs[widget.tabIndex!]
-          .icon;
-      _tabWidth = Provider.of<TabProvider>(context, listen: false)
-          .myTabs[widget.tabIndex!]
-          .tabWidth;
+      _icon = tabProvider.myTabs[widget.tabIndex!].icon;
+      _tabWidth = tabProvider.myTabs[widget.tabIndex!].tabWidth;
     } else {
       _textController = TextEditingController();
       _icon = Icons.home;
@@ -46,6 +41,8 @@ class _TabDialogState extends State<TabDialog> {
   void _handleIconSelected(IconData selectedIcon) {
     setState(() {
       _icon = selectedIcon;
+      _tabWidth = _textController!.text.length *
+          10.0; // Ajusta el ancho del tab según la longitud del texto
     });
   }
 
@@ -55,11 +52,8 @@ class _TabDialogState extends State<TabDialog> {
     var textSize = widget.tabIndex != null
         ? tabProvider.myTabs[widget.tabIndex!].textSize
         : 14.0;
-    var containerSize = widget.tabIndex != null
-        ? tabProvider.myTabs[widget.tabIndex!].containerSize
-        : 50.0;
     var indicatorSize = widget.tabIndex != null
-        ? tabProvider.myTabs[widget.tabIndex!].indicatorSize
+        ? tabProvider.myTabs[widget.tabIndex!].getIndicatorSize()
         : 2.0;
 
     return SingleChildScrollView(
@@ -81,13 +75,13 @@ class _TabDialogState extends State<TabDialog> {
               icon: _icon!,
               showText: dropdownValue != 'Solo el icono',
               showIcon: dropdownValue != 'Solo el texto',
-              tabWidth:
-                  _tabWidth, // Este campo ahora también representa el tamaño del contenedor
               textSize: textSize,
+              indicatorSize: indicatorSize,
             ),
             const SizedBox(height: 15),
             Divider(),
             const SizedBox(height: 15),
+            // Resto del código...
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -196,6 +190,8 @@ class _TabDialogState extends State<TabDialog> {
               if (_textController != null &&
                   _icon != null &&
                   _textController!.text.isNotEmpty) {
+                _tabWidth = _textController!.text.length *
+                    10.0; // Ajusta el ancho del tab según la longitud del texto
                 int? tabIndex;
                 if (!widget.isNewTab) {
                   tabIndex = widget.tabIndex!;
@@ -203,7 +199,6 @@ class _TabDialogState extends State<TabDialog> {
                     tabIndex,
                     _textController!.text,
                     _icon!,
-                    tabWidth: _tabWidth,
                   );
                   Fluttertoast.showToast(
                     msg: "Tab actualizado",
@@ -225,7 +220,6 @@ class _TabDialogState extends State<TabDialog> {
                     Provider.of<TabProvider>(context, listen: false).addTab(
                       _textController!.text,
                       _icon!,
-                      tabWidth: _tabWidth,
                     );
                     tabIndex = Provider.of<TabProvider>(context, listen: false)
                             .myTabs

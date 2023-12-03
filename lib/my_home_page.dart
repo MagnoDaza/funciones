@@ -18,8 +18,7 @@ class MyHomePage extends StatelessWidget {
               appBar: AppBar(
                 bottom: TabBar(
                   isScrollable: true,
-                  indicatorWeight:
-                      2.0, // Ajusta el tamaño del indicador según tus necesidades
+                  indicatorWeight: 2.0,
                   tabs: tabProvider.myTabs.map((tabData) {
                     return Container(
                       width: tabData.tabWidth,
@@ -29,13 +28,18 @@ class MyHomePage extends StatelessWidget {
                       ),
                     );
                   }).toList(),
+                  indicatorSize: TabBarIndicatorSize
+                      .label, // Ajusta el tamaño del indicador al tamaño de la etiqueta
                 ),
               ),
               body: TabBarView(
                 children: tabProvider.myTabs.map((tabData) {
                   return Center(
                     child: tabData.showText
-                        ? Text(tabData.text)
+                        ? Text(
+                            tabData.text,
+                            style: TextStyle(fontSize: tabData.textSize),
+                          )
                         : tabData.showIcon
                             ? Icon(tabData.icon)
                             : Container(),

@@ -1,5 +1,3 @@
-// En tab_data.dart
-
 import 'package:flutter/material.dart';
 
 class TabData {
@@ -9,7 +7,7 @@ class TabData {
   bool hideIcon;
   bool showText;
   bool showIcon;
-  double tabWidth; // Agrega este campo
+  double tabWidth;
   bool isDeletable;
   double textSize;
   double containerSize;
@@ -23,13 +21,15 @@ class TabData {
     this.hideIcon = false,
     this.showText = true,
     this.showIcon = true,
-    this.tabWidth =
-        100.0, // Establece un valor predeterminado para el ancho de la pestaña
-
-    this.textSize = 50, // Tamaño predeterminado del texto
-    this.containerSize = 100, // Tamaño predeterminado del contenedor
-    this.indicatorSize = 50, // Tamaño predeterminado del indicador
+    this.tabWidth = 100.0,
+    this.textSize = 50,
+    this.containerSize = 100,
+    this.indicatorSize = 50,
   });
+
+  double getIndicatorSize() {
+    return showText ? textSize : 0.0;
+  }
 
   void toggleHideName() {
     hideName = !hideName;
@@ -46,7 +46,7 @@ class TabData {
     IconData? icon,
     bool? showText,
     bool? showIcon,
-    double? tabWidth, // Agrega el parámetro tabWidth
+    double? tabWidth,
     double? textSize,
     double? containerSize,
     double? indicatorSize,
@@ -56,7 +56,7 @@ class TabData {
       icon: icon ?? this.icon,
       showText: showText ?? this.showText,
       showIcon: showIcon ?? this.showIcon,
-      tabWidth: tabWidth ?? this.tabWidth, // Actualiza el tabWidth
+      tabWidth: tabWidth ?? this.tabWidth,
       containerSize: containerSize ?? this.containerSize,
       indicatorSize: indicatorSize ?? this.indicatorSize,
       isDeletable: this.isDeletable,
