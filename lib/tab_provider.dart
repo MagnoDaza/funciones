@@ -15,6 +15,9 @@ class TabProvider with ChangeNotifier {
   bool get showIcons => _showIcons;
   bool _showIcons = true;
   int _expandedPanelIndex = -1; // Índice del panel expandido
+  bool _isSliderEnabled = true; // Agrega esta línea
+
+  bool get isSliderEnabled => _isSliderEnabled; // Agrega este método
 
   int get expandedPanelIndex => _expandedPanelIndex;
 

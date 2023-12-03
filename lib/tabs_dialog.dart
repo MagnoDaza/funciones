@@ -1,3 +1,4 @@
+//file tabs_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,9 @@ class TabDialog extends StatefulWidget {
 }
 
 class _TabDialogState extends State<TabDialog> {
+  bool _isPanelExpanded = false; // Agrega esta línea
+  bool _isSliderEnabled = true; // Agrega esta línea
+
   TextEditingController? _textController;
   IconData? _icon;
   String dropdownValue = 'Mostrar icono y nombre';
@@ -39,6 +43,12 @@ class _TabDialogState extends State<TabDialog> {
       _textController = TextEditingController();
       _icon = Icons.home;
     }
+  }
+
+  void _handleIconSelected(IconData selectedIcon) {
+    setState(() {
+      _icon = selectedIcon;
+    });
   }
 
   @override
@@ -66,25 +76,25 @@ class _TabDialogState extends State<TabDialog> {
             const SizedBox(height: 15),
             Divider(),
             const SizedBox(height: 15),
-            const Text('Selecciona el icono',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Divider(),
-            const SizedBox(height: 15),
-            IconButton(
-              icon: Icon(_icon),
-              onPressed: () async {
-                IconData? selectedIcon = await showDialog<IconData>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return IconList();
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Seleccionar el icono',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: Icon(_icon),
+                  onPressed: () async {
+                    await showDialog<IconData>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return IconList(onIconSelected: _handleIconSelected);
+                      },
+                    );
                   },
-                );
-                if (selectedIcon != null) {
-                  setState(() {
-                    _icon = selectedIcon;
-                  });
-                }
-              },
+                ),
+              ],
             ),
             const SizedBox(height: 15),
             Divider(),
@@ -123,32 +133,79 @@ class _TabDialogState extends State<TabDialog> {
             const SizedBox(height: 15),
             Divider(),
             const SizedBox(height: 15),
-            const Text('Tamaño del tab',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Row(
+
+            // ExpansionPanelList para añadir ExpansionPanel
+            ExpansionPanelList(
+              elevation: 1,
+              expandedHeaderPadding: EdgeInsets.all(0),
+              expansionCallback: (int index, bool isExpanded) {
+                setState(() {
+                  _isPanelExpanded = !_isPanelExpanded;
+                  _isSliderEnabled =
+                      !_isPanelExpanded; // Desactivar el slider cuando se expande el panel
+                });
+              },
               children: [
-                const SizedBox(width: 8), // Espacio entre el Text y el Slider
-                Expanded(
-                  child: Tooltip(
-                    message: 'Desliza para ajustar el tamaño del tab',
-                    child: Slider(
-                      value: _tabWidth,
-                      min: 50,
-                      max: 200,
-                      onChanged: (double value) {
-                        setState(() {
-                          _tabWidth = value;
-                        });
-                      },
-                    ),
+                ExpansionPanel(
+                  headerBuilder: (BuildContext context, bool isExpanded) {
+                    return ListTile(
+                      title: Text('Configuración avanzada'),
+                      subtitle: Text(
+                        'Personaliza opciones adicionales',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    );
+                  },
+                  body: Column(
+                    children: [
+                      SwitchListTile(
+                        title: Text('Desactivar Slider'),
+                        value: !_isSliderEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            _isSliderEnabled =
+                                !value; // Invertir el valor porque el switch controla la desactivación
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Tamaño del tab',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Tooltip(
+                              message: 'Desliza para ajustar el tamaño del tab',
+                              child: Slider(
+                                value: _tabWidth,
+                                min: 50,
+                                max: 200,
+                                onChanged: _isSliderEnabled
+                                    ? (double value) {
+                                        setState(() {
+                                          _tabWidth = value;
+                                        });
+                                      }
+                                    : null, // Desactivar el slider según el estado del interruptor
+                              ),
+                            ),
+                          ),
+                          Text(
+                            _tabWidth.toStringAsFixed(0),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  _tabWidth.toStringAsFixed(0), // Muestra el valor del ancho
-                  style: const TextStyle(fontSize: 16),
+                  isExpanded: _isPanelExpanded,
                 ),
               ],
             ),
+
             const SizedBox(height: 15),
           ],
         ),
