@@ -24,19 +24,18 @@ class TabPreview extends StatelessWidget {
       valueListenable: textController,
       builder: (context, value, child) {
         String text = showText
-            ? (value.text.isEmpty ? 'Nombre del tab' : value.text)
-            : '';
-        if (text.length < 4) {
-          text =
-              '    '; // Si el texto tiene menos de 4 caracteres, se rellena con espacios
-        }
+            ? (value.text.isEmpty
+                ? 'Nombre del tab'
+                : value.text.padRight(4, ' '))
+            : ''; // Si el texto está vacío, se muestra "Nombre del tab", si hay un solo carácter, se rellena con 3 espacios vacíos
         final tabIcon = showIcon
             ? icon
             : Icons
                 .tab; // Icono predeterminado si no se ha seleccionado ninguno
-        final tabWidth = text != null
-            ? text.length * 20.0
-            : 100.0; // Ajusta el ancho del tab según la longitud del texto
+        final tabWidth = text.length < 4
+            ? 80.0
+            : text.length *
+                20.0; // Ajusta el ancho del tab según la longitud del texto
         return DefaultTabController(
           length: 1,
           child: Container(
