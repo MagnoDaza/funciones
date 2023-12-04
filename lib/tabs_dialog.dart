@@ -1,3 +1,4 @@
+//file tabdialog.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,6 @@ class _TabDialogState extends State<TabDialog> {
   TextEditingController? _textController;
   IconData? _icon;
   String dropdownValue = 'Mostrar icono y nombre';
-  double _tabWidth = 100.0;
-  bool _isSliderEnabled = true;
 
   @override
   void initState() {
@@ -31,7 +30,6 @@ class _TabDialogState extends State<TabDialog> {
         text: tabProvider.myTabs[widget.tabIndex!].text,
       );
       _icon = tabProvider.myTabs[widget.tabIndex!].icon;
-      _tabWidth = tabProvider.myTabs[widget.tabIndex!].tabWidth;
     } else {
       _textController = TextEditingController();
       _icon = Icons.home;
@@ -41,8 +39,6 @@ class _TabDialogState extends State<TabDialog> {
   void _handleIconSelected(IconData selectedIcon) {
     setState(() {
       _icon = selectedIcon;
-      _tabWidth = _textController!.text.length *
-          10.0; // Ajusta el ancho del tab según la longitud del texto
     });
   }
 
@@ -127,7 +123,6 @@ class _TabDialogState extends State<TabDialog> {
               onChanged: (String? newValue) {
                 setState(() {
                   dropdownValue = newValue!;
-                  _isSliderEnabled = dropdownValue != 'Solo el texto';
                 });
               },
               items: <String>[
@@ -144,38 +139,8 @@ class _TabDialogState extends State<TabDialog> {
             const SizedBox(height: 15),
             Divider(),
             const SizedBox(height: 15),
-            const Text(
-              'Tamaño del tab',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Tooltip(
-                    message: 'Desliza para ajustar el tamaño del tab',
-                    child: IgnorePointer(
-                      ignoring: false,
-                      child: Slider(
-                        value: _tabWidth,
-                        min: 50,
-                        max: 120,
-                        onChanged: (double value) {
-                          setState(() {
-                            _tabWidth = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  _tabWidth.toStringAsFixed(0),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
+            // Eliminamos el código relacionado con el tamaño del tab
+            // Resto del código...
           ],
         ),
         actions: <Widget>[
@@ -190,8 +155,6 @@ class _TabDialogState extends State<TabDialog> {
               if (_textController != null &&
                   _icon != null &&
                   _textController!.text.isNotEmpty) {
-                _tabWidth = _textController!.text.length *
-                    10.0; // Ajusta el ancho del tab según la longitud del texto
                 int? tabIndex;
                 if (!widget.isNewTab) {
                   tabIndex = widget.tabIndex!;

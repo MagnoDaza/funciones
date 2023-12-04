@@ -30,7 +30,7 @@ class TabPreview extends StatelessWidget {
             : Icons
                 .tab; // Icono predeterminado si no se ha seleccionado ninguno
         final tabWidth = text != null
-            ? text.length * 10.0
+            ? text.length * 20.0
             : 100.0; // Ajusta el ancho del tab según la longitud del texto
         return DefaultTabController(
           length: 1,
