@@ -1,3 +1,4 @@
+//file tabpreview
 import 'package:flutter/material.dart';
 
 class TabPreview extends StatelessWidget {
@@ -22,9 +23,13 @@ class TabPreview extends StatelessWidget {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: textController,
       builder: (context, value, child) {
-        final text = showText
+        String text = showText
             ? (value.text.isEmpty ? 'Nombre del tab' : value.text)
-            : null;
+            : '';
+        if (text.length < 4) {
+          text =
+              '    '; // Si el texto tiene menos de 4 caracteres, se rellena con espacios
+        }
         final tabIcon = showIcon
             ? icon
             : Icons
@@ -47,7 +52,7 @@ class TabPreview extends StatelessWidget {
                       child: showText
                           ? FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text(text ?? ''),
+                              child: Text(text),
                             )
                           : null,
                     ),
