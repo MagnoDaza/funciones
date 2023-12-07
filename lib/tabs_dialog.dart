@@ -6,8 +6,6 @@ import 'tab_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// Importaciones necesarias
-
 // Clase principal
 class TabDialog extends StatefulWidget {
   // Variables para almacenar el índice del tab y si es un nuevo tab
@@ -32,10 +30,17 @@ class _TabDialogState extends State<TabDialog> {
   // GlobalKey para el formulario
   final _formKey = GlobalKey<FormState>();
 
+  // Variable para manejar el foco del TextField
+  FocusNode _textFocusNode = FocusNode();
+
+  // Variable para manejar el scroll
+  ScrollController _scrollController = ScrollController();
+
   // Inicialización del estado
   @override
   void initState() {
     super.initState();
+
     if (widget.tabIndex != null) {
       var tabProvider = Provider.of<TabProvider>(context, listen: false);
       _textController = TextEditingController(
@@ -46,6 +51,18 @@ class _TabDialogState extends State<TabDialog> {
       _textController = TextEditingController();
       _icon = Icons.home;
     }
+
+    // Añade un listener al foco del TextField
+    _textFocusNode.addListener(() {
+      if (_textFocusNode.hasFocus) {
+        // Si el TextField tiene el foco, mueve el scroll hacia arriba
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   // Función para manejar la selección del ícono
@@ -68,6 +85,7 @@ class _TabDialogState extends State<TabDialog> {
 
     return SafeArea(
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: AlertDialog(
           title: Text(widget.isNewTab ? 'Crear un nuevo tab' : 'Editar Tab'),
           content: Form(
@@ -92,7 +110,7 @@ class _TabDialogState extends State<TabDialog> {
                   indicatorSize: indicatorSize,
                 ),
                 const SizedBox(height: 15),
-                Divider(),
+                const Divider(),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,16 +135,17 @@ class _TabDialogState extends State<TabDialog> {
                   ],
                 ),
                 const SizedBox(height: 15),
-                Divider(),
+                const Divider(),
                 const Text(
                   'Nombre del Tab',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Divider(),
+                const Divider(),
                 const SizedBox(height: 15),
                 TextFormField(
+                  focusNode: _textFocusNode,
                   controller: _textController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Nombre del Tab",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.edit),
@@ -135,63 +154,104 @@ class _TabDialogState extends State<TabDialog> {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, proporciona un nombre para el tab';
                     }
+                    if (widget.isNewTab &&
+                        tabProvider.myTabs.any((tab) => tab.text == value)) {
+                      return 'Ya existe un tab con ese nombre';
+                    }
                     return null;
                   },
                 ),
                 const SizedBox(height: 15),
-                Divider(),
+                const Divider(),
                 const SizedBox(height: 15),
                 const Text(
                   'Mostrar en el tab',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 15),
-                ToggleButtons(
+                Wrap(
                   children: <Widget>[
-                    Text('✔️ Icono y texto'),
-                    Text('✔️ Icono'),
-                    Text('✔️ Texto'),
-                  ],
-                  isSelected: [
-                    segmentedControlGroupValue == 0,
-                    segmentedControlGroupValue == 1,
-                    segmentedControlGroupValue == 2,
-                  ],
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < 3; i++) {
-                        if (i == index) {
-                          segmentedControlGroupValue = i;
-                        }
-                      }
-                    });
-                  },
-                ),
-                const SizedBox(height: 15),
-                Divider(),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: Text(widget.isNewTab
-                          ? 'Crear nuevo tab'
-                          : 'Confirmar edición'),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Resto del código...
-                          Fluttertoast.showToast(
-                            msg: widget.isNewTab ? "Tab creado" : "Tab editado",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                        }
+                    ToggleButtons(
+                      children: <Widget>[
+                        Text(
+                            '${segmentedControlGroupValue == 0 ? ' ✔️' : ''}Icono y texto'),
+                        Text(
+                            '${segmentedControlGroupValue == 1 ? ' ✔️' : ''}Icono'),
+                        Text(
+                            '${segmentedControlGroupValue == 2 ? ' ✔️' : ''}Texto'),
+                      ],
+                      isSelected: [
+                        segmentedControlGroupValue == 0,
+                        segmentedControlGroupValue == 1,
+                        segmentedControlGroupValue == 2,
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int i = 0; i < 3; i++) {
+                            if (i == index) {
+                              segmentedControlGroupValue = i;
+                            }
+                          }
+                        });
                       },
                     ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                const Divider(),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     TextButton(
                       child: const Text('Cancelar'),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
+                    TextButton(
+                        child: Text(widget.isNewTab
+                            ? 'Crear nuevo tab'
+                            : 'Confirmar edición'),
+                        onPressed: () {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          if (widget.tabIndex != null) {
+                            if (segmentedControlGroupValue == 0) {
+                              tabProvider.updateTabShowText(
+                                  widget.tabIndex!, true);
+                              tabProvider.updateTabShowIcon(
+                                  widget.tabIndex!, true);
+                            } else if (segmentedControlGroupValue == 1) {
+                              tabProvider.updateTabShowText(
+                                  widget.tabIndex!, false);
+                              tabProvider.updateTabShowIcon(
+                                  widget.tabIndex!, true);
+                            } else if (segmentedControlGroupValue == 2) {
+                              tabProvider.updateTabShowText(
+                                  widget.tabIndex!, true);
+                              tabProvider.updateTabShowIcon(
+                                  widget.tabIndex!, false);
+                            }
+                          }
+
+                          if (widget.isNewTab) {
+                            tabProvider.addTab(_textController!.text, _icon!);
+                            Fluttertoast.showToast(
+                              msg: "Tab creado: ${_textController?.text}",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                          } else {
+                            tabProvider.editTab(widget.tabIndex!,
+                                _textController!.text, _icon!);
+                            Fluttertoast.showToast(
+                              msg: "Tab editado: ${_textController?.text}",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                          }
+                          Navigator.of(context).pop();
+                        }),
                   ],
                 ),
               ],
