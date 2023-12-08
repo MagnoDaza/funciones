@@ -12,6 +12,7 @@ class TabData {
   double textSize;
   double containerSize;
   double indicatorSize;
+  int segmentedControlGroupValue;
 
   TabData({
     required this.text,
@@ -25,6 +26,7 @@ class TabData {
     this.textSize = 50,
     this.containerSize = 100,
     this.indicatorSize = 50,
+    required this.segmentedControlGroupValue,
   });
 
   double getIndicatorSize() {
@@ -50,6 +52,8 @@ class TabData {
     double? textSize,
     double? containerSize,
     double? indicatorSize,
+    int?
+        segmentedControlGroupValue, // Añade segmentedControlGroupValue como un parámetro opcional
   }) {
     return TabData(
       text: text ?? this.text,
@@ -61,6 +65,8 @@ class TabData {
       indicatorSize: indicatorSize ?? this.indicatorSize,
       isDeletable: this.isDeletable,
       textSize: textSize ?? this.textSize,
+      segmentedControlGroupValue: segmentedControlGroupValue ??
+          this.segmentedControlGroupValue, // Usa el valor proporcionado o el valor actual
     );
   }
 }
