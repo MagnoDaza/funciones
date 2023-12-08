@@ -188,8 +188,8 @@ class _TabDialogState extends State<TabDialog> {
                       onPressed: (int index) {
                         setState(() {
                           for (int i = 0; i < 3; i++) {
-                            if (i == index) {
-                              segmentedControlGroupValue = i;
+                            {
+                              segmentedControlGroupValue = index;
                             }
                           }
                         });

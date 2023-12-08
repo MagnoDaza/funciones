@@ -118,7 +118,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                     },
                     icon: const Icon(Icons.visibility),
                     label: const Text('Mostrar Tabs'),
-                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                    style: ElevatedButton.styleFrom(primary: Colors.deepOrange),
                   ),
                 ],
               ),

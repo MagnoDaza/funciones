@@ -1,8 +1,11 @@
+// Importa los paquetes necesarios
 import 'package:flutter/material.dart';
-import 'tab_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'tab_data.dart';
 
+// Define la clase TabProvider con ChangeNotifier para permitir que los widgets se suscriban a cambios
 class TabProvider with ChangeNotifier {
+  // Declara las variables que se utilizarán
   List<TabData> myTabs = [
     TabData(
       text: 'Result 1',
@@ -16,20 +19,15 @@ class TabProvider with ChangeNotifier {
 
   // Agrega un ValueNotifier para el ancho del tab
   ValueNotifier<double> tabWidthNotifier = ValueNotifier<double>(100.0);
-  List<TabData> _tempTabs = [];
 
+  List<TabData> _tempTabs = [];
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
-
   bool showText = true;
-
   bool get showIcons => _showIcons;
   bool _showIcons = true;
-
   int _expandedPanelIndex = -1;
-
   bool _isSliderEnabled = true;
-
   bool get isSliderEnabled => _isSliderEnabled;
 
   int get expandedPanelIndex => _expandedPanelIndex;
@@ -55,12 +53,11 @@ class TabProvider with ChangeNotifier {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
     );
-
     // Actualiza el ValueNotifier con el nuevo ancho del tab
     tabWidthNotifier.value = myTabs.last.tabWidth;
   }
 
-  void updateTab(int index, String name, IconData icon,
+  void editTab(int index, String name, IconData icon,
       {double tabWidth = 100.0}) {
     myTabs[index] =
         myTabs[index].copyWith(text: name, icon: icon, tabWidth: tabWidth);
@@ -99,7 +96,6 @@ class TabProvider with ChangeNotifier {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
     );
-
     if (!customNamesEnabled) {
       toggleShowText();
     }
@@ -164,6 +160,8 @@ class TabProvider with ChangeNotifier {
     if (index < 0 || index >= myTabs.length) {
       return 50.0;
     }
-    return myTabs[index].indicatorSize;
+    return myTabs[index].showText
+        ? myTabs[index].text.length.toDouble()
+        : myTabs[index].indicatorSize;
   }
 }

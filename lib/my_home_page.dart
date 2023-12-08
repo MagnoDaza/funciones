@@ -20,7 +20,8 @@ class MyHomePage extends StatelessWidget {
                   isScrollable: true,
                   indicatorSize: TabBarIndicatorSize.label,
                   tabs: tabProvider.myTabs.map((tabData) {
-                    return _buildTab(tabData.text, tabData.icon);
+                    return _buildTab(tabData.text, tabData.icon,
+                        tabData.showText, tabData.showIcon);
                   }).toList(),
                 ),
                 title: Text('Tabs Demo'),
@@ -55,12 +56,12 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTab(String text, IconData icon) {
+  Widget _buildTab(String text, IconData icon, bool showText, bool showIcon) {
     return Tab(
-      icon: Icon(icon),
+      icon: showIcon ? Icon(icon) : null,
       child: FittedBox(
         fit: BoxFit.scaleDown,
-        child: Text(text),
+        child: showText ? Text(text) : null,
       ),
     );
   }
