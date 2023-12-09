@@ -1,4 +1,3 @@
-// Importaciones necesarias
 import 'package:flutter/material.dart';
 import 'icon_list.dart';
 import 'tab_provider.dart';
@@ -6,56 +5,42 @@ import 'tab_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// Clase principal
 class TabDialog extends StatefulWidget {
-  // Variables para almacenar el índice del tab y si es un nuevo tab
   final int? tabIndex;
   final bool isNewTab;
 
-  // Constructor
   const TabDialog({this.tabIndex, this.isNewTab = false});
 
-  // Creación del estado
   @override
   _TabDialogState createState() => _TabDialogState();
 }
 
-// Clase de estado
 class _TabDialogState extends State<TabDialog> {
-  // Variables para almacenar el controlador del texto, el ícono y el valor del dropdown
   TextEditingController? _textController;
   IconData? _icon;
   int segmentedControlGroupValue = 0;
-
-  // GlobalKey para el formulario
   final _formKey = GlobalKey<FormState>();
-
-  // Variable para manejar el foco del TextField
   FocusNode _textFocusNode = FocusNode();
-
-  // Variable para manejar el scroll
   ScrollController _scrollController = ScrollController();
 
-  // Inicialización del estado
   @override
   void initState() {
     super.initState();
-
     if (widget.tabIndex != null) {
       var tabProvider = Provider.of<TabProvider>(context, listen: false);
       _textController = TextEditingController(
         text: tabProvider.myTabs[widget.tabIndex!].text,
       );
       _icon = tabProvider.myTabs[widget.tabIndex!].icon;
+      segmentedControlGroupValue =
+          tabProvider.getTabSegmentedControlGroupValue(widget.tabIndex!);
     } else {
       _textController = TextEditingController();
       _icon = Icons.home;
+      segmentedControlGroupValue = 0;
     }
-
-    // Añade un listener al foco del TextField
     _textFocusNode.addListener(() {
       if (_textFocusNode.hasFocus) {
-        // Si el TextField tiene el foco, mueve el scroll hacia arriba
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 200),
@@ -65,14 +50,12 @@ class _TabDialogState extends State<TabDialog> {
     });
   }
 
-  // Función para manejar la selección del ícono
   void _handleIconSelected(IconData selectedIcon) {
     setState(() {
       _icon = selectedIcon;
     });
   }
 
-  // Construcción de la interfaz de usuario
   @override
   Widget build(BuildContext context) {
     var tabProvider = Provider.of<TabProvider>(context);
@@ -82,7 +65,6 @@ class _TabDialogState extends State<TabDialog> {
     var indicatorSize = widget.tabIndex != null
         ? tabProvider.myTabs[widget.tabIndex!].getIndicatorSize()
         : 2.0;
-
     return SafeArea(
       child: SingleChildScrollView(
         controller: _scrollController,
@@ -117,8 +99,10 @@ class _TabDialogState extends State<TabDialog> {
                   children: [
                     const Text(
                       'Seleccionar el icono',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     IconButton(
                       icon: Icon(_icon),
@@ -138,7 +122,10 @@ class _TabDialogState extends State<TabDialog> {
                 const Divider(),
                 const Text(
                   'Nombre del Tab',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Divider(),
                 const SizedBox(height: 15),
@@ -166,34 +153,18 @@ class _TabDialogState extends State<TabDialog> {
                 const SizedBox(height: 15),
                 const Text(
                   'Mostrar en el tab',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 15),
                 Wrap(
                   children: <Widget>[
-                    ToggleButtons(
+                    Column(
                       children: <Widget>[
-                        Text(
-                            '${segmentedControlGroupValue == 0 ? ' ✔️' : ''}Icono y texto'),
-                        Text(
-                            '${segmentedControlGroupValue == 1 ? ' ✔️' : ''}Icono'),
-                        Text(
-                            '${segmentedControlGroupValue == 2 ? ' ✔️' : ''}Texto'),
+                        // Aquí es donde necesitas agregar el código para los botones segmentados
                       ],
-                      isSelected: [
-                        segmentedControlGroupValue == 0,
-                        segmentedControlGroupValue == 1,
-                        segmentedControlGroupValue == 2,
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int i = 0; i < 3; i++) {
-                            {
-                              segmentedControlGroupValue = index;
-                            }
-                          }
-                        });
-                      },
                     ),
                   ],
                 ),
@@ -208,50 +179,50 @@ class _TabDialogState extends State<TabDialog> {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     TextButton(
-                        child: Text(widget.isNewTab
-                            ? 'Crear nuevo tab'
-                            : 'Confirmar edición'),
-                        onPressed: () {
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          }
-                          if (widget.tabIndex != null) {
-                            if (segmentedControlGroupValue == 0) {
-                              tabProvider.updateTabShowText(
-                                  widget.tabIndex!, true);
-                              tabProvider.updateTabShowIcon(
-                                  widget.tabIndex!, true);
-                            } else if (segmentedControlGroupValue == 1) {
-                              tabProvider.updateTabShowText(
-                                  widget.tabIndex!, false);
-                              tabProvider.updateTabShowIcon(
-                                  widget.tabIndex!, true);
-                            } else if (segmentedControlGroupValue == 2) {
-                              tabProvider.updateTabShowText(
-                                  widget.tabIndex!, true);
-                              tabProvider.updateTabShowIcon(
-                                  widget.tabIndex!, false);
-                            }
-                          }
-
-                          if (widget.isNewTab) {
-                            tabProvider.addTab(_textController!.text, _icon!);
-                            Fluttertoast.showToast(
-                              msg: "Tab creado: ${_textController?.text}",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                            );
-                          } else {
-                            tabProvider.editTab(widget.tabIndex!,
-                                _textController!.text, _icon!);
-                            Fluttertoast.showToast(
-                              msg: "Tab editado: ${_textController?.text}",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                            );
-                          }
-                          Navigator.of(context).pop();
-                        }),
+                      child: Text(widget.isNewTab
+                          ? 'Crear nuevo tab'
+                          : 'Confirmar edición'),
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) {
+                          return;
+                        }
+                        if (segmentedControlGroupValue == -1) {
+                          Fluttertoast.showToast(
+                            msg: "Por favor, selecciona un botón segmentado",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                          return;
+                        }
+                        if (widget.tabIndex != null) {
+                          tabProvider.updateTab(
+                            widget.tabIndex!,
+                            _textController!.text,
+                            _icon!,
+                            segmentedControlGroupValue,
+                          );
+                        }
+                        if (widget.isNewTab) {
+                          tabProvider.addTab(
+                            _textController!.text,
+                            _icon!,
+                            segmentedControlGroupValue,
+                          );
+                          Fluttertoast.showToast(
+                            msg: "Tab creado: ${_textController?.text}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "Tab editado: ${_textController?.text}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                        }
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ],
                 ),
               ],

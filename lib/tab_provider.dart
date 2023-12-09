@@ -1,25 +1,19 @@
-// Importa los paquetes necesarios
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'tab_data.dart';
 
-// Define la clase TabProvider con ChangeNotifier para permitir que los widgets se suscriban a cambios
 class TabProvider with ChangeNotifier {
-  // Declara las variables que se utilizarán
   List<TabData> myTabs = [
     TabData(
       text: 'Result 1',
       icon: Icons.home,
       isDeletable: false,
-      indicatorSize: 'Result 1'
-          .length
-          .toDouble(), // Ajusta el tamaño del indicador al tamaño del texto
-    )
+      indicatorSize: 'Result 1'.length.toDouble(),
+      segmentedControlGroupValue: 0, // Nuevo campo
+    ),
   ];
 
-  // Agrega un ValueNotifier para el ancho del tab
   ValueNotifier<double> tabWidthNotifier = ValueNotifier<double>(100.0);
-
   List<TabData> _tempTabs = [];
   bool get customNamesEnabled => _customNamesEnabled;
   bool _customNamesEnabled = true;
@@ -29,7 +23,6 @@ class TabProvider with ChangeNotifier {
   int _expandedPanelIndex = -1;
   bool _isSliderEnabled = true;
   bool get isSliderEnabled => _isSliderEnabled;
-
   int get expandedPanelIndex => _expandedPanelIndex;
 
   void togglePanelExpansion(int index) {
@@ -37,30 +30,38 @@ class TabProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int getTabSegmentedControlGroupValue(int index) {
+    return myTabs[index].segmentedControlGroupValue;
+  }
+
   bool isPanelExpanded(int index) {
     return _expandedPanelIndex == index;
   }
 
-  void addTab(String name, IconData icon, {double tabWidth = 100.0}) {
-    myTabs.add(TabData(
-      text: name,
-      icon: icon,
-      tabWidth: tabWidth ?? 50.0,
-    ));
-    notifyListeners();
-    Fluttertoast.showToast(
-      msg: "El largo del indicador del tab activo es ${myTabs.last.textSize}",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+  void addTab(String name, IconData icon, int segmentedControlGroupValue,
+      {double tabWidth = 100.0}) {
+    myTabs.add(
+      TabData(
+        text: name,
+        icon: icon,
+        tabWidth: tabWidth ?? 50.0,
+        segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
+      ),
     );
-    // Actualiza el ValueNotifier con el nuevo ancho del tab
+    notifyListeners();
+
     tabWidthNotifier.value = myTabs.last.tabWidth;
   }
 
-  void editTab(int index, String name, IconData icon,
+  void editTab(
+      int index, String name, IconData icon, int segmentedControlGroupValue,
       {double tabWidth = 100.0}) {
-    myTabs[index] =
-        myTabs[index].copyWith(text: name, icon: icon, tabWidth: tabWidth);
+    myTabs[index] = myTabs[index].copyWith(
+      text: name,
+      icon: icon,
+      tabWidth: tabWidth,
+      segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
+    );
     notifyListeners();
   }
 
@@ -160,8 +161,18 @@ class TabProvider with ChangeNotifier {
     if (index < 0 || index >= myTabs.length) {
       return 50.0;
     }
-    return myTabs[index].showText
-        ? myTabs[index].text.length.toDouble()
-        : myTabs[index].indicatorSize;
+    return myTabs[index].indicatorSize;
+  }
+
+  void updateTab(
+      int index, String name, IconData icon, int segmentedControlGroupValue,
+      {double tabWidth = 100.0}) {
+    myTabs[index] = myTabs[index].copyWith(
+      text: name,
+      icon: icon,
+      tabWidth: tabWidth,
+      segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
+    );
+    notifyListeners();
   }
 }
