@@ -1,5 +1,4 @@
 //file tabdialog.dart
-
 import 'package:flutter/material.dart';
 import 'icon_list.dart';
 import 'tab_provider.dart';
@@ -28,8 +27,8 @@ class _TabDialogState extends State<TabDialog> {
   @override
   void initState() {
     super.initState();
+    var tabProvider = Provider.of<TabProvider>(context, listen: false);
     if (widget.tabIndex != null) {
-      var tabProvider = Provider.of<TabProvider>(context, listen: false);
       _textController = TextEditingController(
         text: tabProvider.myTabs[widget.tabIndex!].text,
       );
@@ -251,7 +250,6 @@ class _TabDialogState extends State<TabDialog> {
                         if (!_formKey.currentState!.validate()) {
                           return;
                         }
-
                         String chipLabel;
                         if (segmentedControlGroupValue == 0) {
                           chipLabel = 'Icono y texto';
@@ -262,33 +260,13 @@ class _TabDialogState extends State<TabDialog> {
                         } else {
                           chipLabel = 'Ninguno';
                         }
-
-                        if (widget.tabIndex != null) {
-                          tabProvider.updateTab(
-                            widget.tabIndex!,
-                            _textController!.text,
-                            _icon!,
-                            segmentedControlGroupValue ?? 0,
-                          );
-                        }
-                        if (widget.isNewTab) {
-                          tabProvider.addTab(
-                            _textController!.text,
-                            _icon!,
-                            segmentedControlGroupValue ?? 0,
-                          );
-                          Fluttertoast.showToast(
-                            msg: "Tab creado: ${_textController?.text}",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: "Tab editado: ${_textController?.text}",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                        }
+                        tabProvider.handleTab(
+                          widget.tabIndex,
+                          _textController!.text,
+                          _icon!,
+                          segmentedControlGroupValue ?? 0,
+                          widget.isNewTab,
+                        );
                         Navigator.of(context).pop();
                       },
                     ),

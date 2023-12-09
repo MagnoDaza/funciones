@@ -47,7 +47,11 @@ class TabProvider with ChangeNotifier {
         segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
       ),
     );
+// Actualiza el estado del chip seleccionado
+    updateTabShowText(myTabs.length - 1, segmentedControlGroupValue != 2);
+    updateTabShowIcon(myTabs.length - 1, segmentedControlGroupValue != 1);
 
+    notifyListeners();
     notifyListeners();
   }
 
@@ -172,5 +176,36 @@ class TabProvider with ChangeNotifier {
       segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
     );
     notifyListeners();
+  }
+
+  void handleTab(int? index, String name, IconData icon,
+      int segmentedControlGroupValue, bool isNewTab,
+      {double tabWidth = 100.0}) {
+    if (isNewTab) {
+      addTab(
+        name,
+        icon,
+        segmentedControlGroupValue,
+        tabWidth: tabWidth,
+      );
+      Fluttertoast.showToast(
+        msg: "Tab creado: $name",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else if (index != null) {
+      updateTab(
+        index,
+        name,
+        icon,
+        segmentedControlGroupValue,
+        tabWidth: tabWidth,
+      );
+      Fluttertoast.showToast(
+        msg: "Tab editado: $name",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
   }
 }
