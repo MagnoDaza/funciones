@@ -1,3 +1,5 @@
+//file tabdialog.dart
+
 import 'package:flutter/material.dart';
 import 'icon_list.dart';
 import 'tab_provider.dart';
@@ -255,6 +257,17 @@ class _TabDialogState extends State<TabDialog> {
                             gravity: ToastGravity.BOTTOM,
                           );
                           return;
+                        }
+
+                        String chipLabel;
+                        if (segmentedControlGroupValue == 0) {
+                          chipLabel = 'Icono y texto';
+                        } else if (segmentedControlGroupValue == 1) {
+                          chipLabel = 'Icono';
+                        } else if (segmentedControlGroupValue == 2) {
+                          chipLabel = 'Texto';
+                        } else {
+                          chipLabel = 'Ninguno';
                         }
 
                         if (widget.tabIndex != null) {
