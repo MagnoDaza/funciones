@@ -18,7 +18,7 @@ class TabDialog extends StatefulWidget {
 class _TabDialogState extends State<TabDialog> {
   TextEditingController? _textController;
   IconData? _icon;
-  int segmentedControlGroupValue = 0;
+  int? segmentedControlGroupValue = 0;
   final _formKey = GlobalKey<FormState>();
   FocusNode _textFocusNode = FocusNode();
   ScrollController _scrollController = ScrollController();
@@ -161,10 +161,72 @@ class _TabDialogState extends State<TabDialog> {
                 const SizedBox(height: 15),
                 Wrap(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        // Aquí es donde necesitas agregar el código para los botones segmentados
-                      ],
+                    Container(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: <Widget>[
+                          ChoiceChip(
+                            label: Text('Icono y texto',
+                                style: TextStyle(color: Colors.white)),
+                            avatar: segmentedControlGroupValue == 0
+                                ? null
+                                : Icon(Icons.image, color: Colors.white),
+                            selected: segmentedControlGroupValue == 0,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                segmentedControlGroupValue =
+                                    selected ? 0 : segmentedControlGroupValue;
+                                if (widget.tabIndex != null && selected) {
+                                  tabProvider.updateTabShowText(
+                                      widget.tabIndex!, true);
+                                  tabProvider.updateTabShowIcon(
+                                      widget.tabIndex!, true);
+                                }
+                              });
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text('Icono',
+                                style: TextStyle(color: Colors.white)),
+                            avatar: segmentedControlGroupValue == 1
+                                ? null
+                                : Icon(Icons.image, color: Colors.white),
+                            selected: segmentedControlGroupValue == 1,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                segmentedControlGroupValue =
+                                    selected ? 1 : segmentedControlGroupValue;
+                                if (widget.tabIndex != null && selected) {
+                                  tabProvider.updateTabShowText(
+                                      widget.tabIndex!, false);
+                                  tabProvider.updateTabShowIcon(
+                                      widget.tabIndex!, true);
+                                }
+                              });
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text('Texto',
+                                style: TextStyle(color: Colors.white)),
+                            avatar: segmentedControlGroupValue == 2
+                                ? null
+                                : Icon(Icons.text_fields, color: Colors.white),
+                            selected: segmentedControlGroupValue == 2,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                segmentedControlGroupValue =
+                                    selected ? 2 : segmentedControlGroupValue;
+                                if (widget.tabIndex != null && selected) {
+                                  tabProvider.updateTabShowText(
+                                      widget.tabIndex!, true);
+                                  tabProvider.updateTabShowIcon(
+                                      widget.tabIndex!, false);
+                                }
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -194,19 +256,20 @@ class _TabDialogState extends State<TabDialog> {
                           );
                           return;
                         }
+
                         if (widget.tabIndex != null) {
                           tabProvider.updateTab(
                             widget.tabIndex!,
                             _textController!.text,
                             _icon!,
-                            segmentedControlGroupValue,
+                            segmentedControlGroupValue ?? 0,
                           );
                         }
                         if (widget.isNewTab) {
                           tabProvider.addTab(
                             _textController!.text,
                             _icon!,
-                            segmentedControlGroupValue,
+                            segmentedControlGroupValue ?? 0,
                           );
                           Fluttertoast.showToast(
                             msg: "Tab creado: ${_textController?.text}",
