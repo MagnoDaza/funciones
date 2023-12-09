@@ -87,8 +87,8 @@ class _TabDialogState extends State<TabDialog> {
                 TabPreview(
                   textController: _textController!,
                   icon: _icon!,
-                  showText: segmentedControlGroupValue != 2,
-                  showIcon: segmentedControlGroupValue != 1,
+                  showText: segmentedControlGroupValue != 1,
+                  showIcon: segmentedControlGroupValue != 2,
                   textSize: textSize,
                   indicatorSize: indicatorSize,
                 ),
@@ -171,7 +171,8 @@ class _TabDialogState extends State<TabDialog> {
                                 style: TextStyle(color: Colors.white)),
                             avatar: segmentedControlGroupValue == 0
                                 ? null
-                                : const Icon(Icons.image, color: Colors.white),
+                                : const Icon(Icons.auto_awesome_sharp,
+                                    color: Colors.white),
                             selected: segmentedControlGroupValue == 0,
                             onSelected: (bool selected) {
                               setState(() {
@@ -211,7 +212,7 @@ class _TabDialogState extends State<TabDialog> {
                                 style: TextStyle(color: Colors.white)),
                             avatar: segmentedControlGroupValue == 2
                                 ? null
-                                : const Icon(Icons.text_fields,
+                                : const Icon(Icons.text_fields_sharp,
                                     color: Colors.white),
                             selected: segmentedControlGroupValue == 2,
                             onSelected: (bool selected) {
@@ -260,6 +261,8 @@ class _TabDialogState extends State<TabDialog> {
                         } else {
                           chipLabel = 'Ninguno';
                         }
+
+                        //tabprovider para crear, editar y actualizar un tab
                         tabProvider.handleTab(
                           widget.tabIndex,
                           _textController!.text,

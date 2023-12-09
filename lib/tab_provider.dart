@@ -48,10 +48,9 @@ class TabProvider with ChangeNotifier {
       ),
     );
 // Actualiza el estado del chip seleccionado
-    updateTabShowText(myTabs.length - 1, segmentedControlGroupValue != 2);
-    updateTabShowIcon(myTabs.length - 1, segmentedControlGroupValue != 1);
+    updateTabShowText(myTabs.length - 1, segmentedControlGroupValue != 1);
+    updateTabShowIcon(myTabs.length - 1, segmentedControlGroupValue != 2);
 
-    notifyListeners();
     notifyListeners();
   }
 

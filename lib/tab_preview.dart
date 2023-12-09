@@ -1,4 +1,4 @@
-// file tabpreview.dart
+// file tabpreview.dartt
 import 'package:flutter/material.dart';
 
 // Define la clase TabPreview como un widget sin estado
