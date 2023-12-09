@@ -29,11 +29,11 @@ class _IconListState extends State<IconList> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
+      title: const Padding(
+        padding: EdgeInsets.only(bottom: 16.0),
         child: Text('Selecciona un icono'),
       ),
-      contentPadding: EdgeInsets.all(16.0),
+      contentPadding: const EdgeInsets.all(16.0),
       children: [
         Container(
           width: double.maxFinite,
@@ -50,7 +50,7 @@ class _IconListState extends State<IconList> {
               );
 
               return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5, // 5 columnas por fila
                   crossAxisSpacing: 16.0, // Espacio entre columnas
                   mainAxisSpacing: 16.0, // Espacio entre filas

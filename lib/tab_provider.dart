@@ -22,8 +22,6 @@ class TabProvider with ChangeNotifier {
   bool get showIcons => _showIcons;
   bool _showIcons = true;
   int _expandedPanelIndex = -1;
-  bool _isSliderEnabled = true;
-  bool get isSliderEnabled => _isSliderEnabled;
   int get expandedPanelIndex => _expandedPanelIndex;
 
   void togglePanelExpansion(int index) {
@@ -49,9 +47,8 @@ class TabProvider with ChangeNotifier {
         segmentedControlGroupValue: segmentedControlGroupValue, // Nuevo campo
       ),
     );
-    notifyListeners();
 
-    tabWidthNotifier.value = myTabs.last.tabWidth;
+    notifyListeners();
   }
 
   void editTab(

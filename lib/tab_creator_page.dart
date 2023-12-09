@@ -22,10 +22,10 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
       appBar: AppBar(
         title: const Text('Creador de DinamicsTabs'),
         actions: [
-          Tooltip(
+          const Tooltip(
             message: 'Información general',
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Icon(Icons.info_outline, color: Colors.grey),
             ),
           ),
@@ -46,7 +46,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -58,7 +58,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(Icons.info, color: Colors.grey),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Expanded(
                               child: Wrap(
                                 children: [
@@ -93,16 +93,16 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         'Mostrar Tabs',
                         style: TextStyle(fontSize: 16),
                       ),
                       Tooltip(
                         message: 'Haz clic para mostrar u ocultar tabs',
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Icon(Icons.info_outline, color: Colors.grey),
                         ),
                       ),
@@ -127,16 +127,16 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         'Organizar Tabs',
                         style: TextStyle(fontSize: 16),
                       ),
                       Tooltip(
                         message: 'Haz clic para organizar tus tabs',
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Icon(Icons.info_outline, color: Colors.grey),
                         ),
                       ),

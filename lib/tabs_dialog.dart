@@ -168,11 +168,11 @@ class _TabDialogState extends State<TabDialog> {
                         alignment: WrapAlignment.center,
                         children: <Widget>[
                           ChoiceChip(
-                            label: Text('Icono y texto',
+                            label: const Text('Icono y texto',
                                 style: TextStyle(color: Colors.white)),
                             avatar: segmentedControlGroupValue == 0
                                 ? null
-                                : Icon(Icons.image, color: Colors.white),
+                                : const Icon(Icons.image, color: Colors.white),
                             selected: segmentedControlGroupValue == 0,
                             onSelected: (bool selected) {
                               setState(() {
@@ -188,11 +188,11 @@ class _TabDialogState extends State<TabDialog> {
                             },
                           ),
                           ChoiceChip(
-                            label: Text('Icono',
+                            label: const Text('Icono',
                                 style: TextStyle(color: Colors.white)),
                             avatar: segmentedControlGroupValue == 1
                                 ? null
-                                : Icon(Icons.image, color: Colors.white),
+                                : const Icon(Icons.image, color: Colors.white),
                             selected: segmentedControlGroupValue == 1,
                             onSelected: (bool selected) {
                               setState(() {
@@ -208,11 +208,12 @@ class _TabDialogState extends State<TabDialog> {
                             },
                           ),
                           ChoiceChip(
-                            label: Text('Texto',
+                            label: const Text('Texto',
                                 style: TextStyle(color: Colors.white)),
                             avatar: segmentedControlGroupValue == 2
                                 ? null
-                                : Icon(Icons.text_fields, color: Colors.white),
+                                : const Icon(Icons.text_fields,
+                                    color: Colors.white),
                             selected: segmentedControlGroupValue == 2,
                             onSelected: (bool selected) {
                               setState(() {
@@ -248,14 +249,6 @@ class _TabDialogState extends State<TabDialog> {
                           : 'Confirmar edición'),
                       onPressed: () {
                         if (!_formKey.currentState!.validate()) {
-                          return;
-                        }
-                        if (segmentedControlGroupValue == -1) {
-                          Fluttertoast.showToast(
-                            msg: "Por favor, selecciona un botón segmentado",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
                           return;
                         }
 
