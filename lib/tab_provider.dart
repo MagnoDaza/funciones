@@ -1,4 +1,4 @@
-//file tabprovider.dart
+//file tabprovider.dartt
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'tab_data.dart';
@@ -8,7 +8,7 @@ class TabProvider with ChangeNotifier {
     TabData(
       text: 'Result 1',
       icon: Icons.home,
-      isDeletable: false,
+      isDeletable: true,
       indicatorSize: 'Result 1'.length.toDouble(),
       segmentedControlGroupValue: 0, // Nuevo campo
     ),

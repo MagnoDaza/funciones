@@ -167,12 +167,14 @@ class _TabDialogState extends State<TabDialog> {
                         alignment: WrapAlignment.center,
                         children: <Widget>[
                           ChoiceChip(
-                            label: const Text('Icono y texto',
-                                style: TextStyle(color: Colors.white)),
+                            label: const Text(
+                              'Icono y texto',
+                            ),
                             avatar: segmentedControlGroupValue == 0
                                 ? null
-                                : const Icon(Icons.auto_awesome_sharp,
-                                    color: Colors.white),
+                                : const Icon(
+                                    Icons.auto_awesome_sharp,
+                                  ),
                             selected: segmentedControlGroupValue == 0,
                             onSelected: (bool selected) {
                               setState(() {
@@ -188,11 +190,12 @@ class _TabDialogState extends State<TabDialog> {
                             },
                           ),
                           ChoiceChip(
-                            label: const Text('Icono',
-                                style: TextStyle(color: Colors.white)),
+                            label: const Text('Icono', style: TextStyle()),
                             avatar: segmentedControlGroupValue == 1
                                 ? null
-                                : const Icon(Icons.image, color: Colors.white),
+                                : const Icon(
+                                    Icons.image,
+                                  ),
                             selected: segmentedControlGroupValue == 1,
                             onSelected: (bool selected) {
                               setState(() {
@@ -208,12 +211,12 @@ class _TabDialogState extends State<TabDialog> {
                             },
                           ),
                           ChoiceChip(
-                            label: const Text('Texto',
-                                style: TextStyle(color: Colors.white)),
+                            label: const Text('Texto', style: TextStyle()),
                             avatar: segmentedControlGroupValue == 2
                                 ? null
-                                : const Icon(Icons.text_fields_sharp,
-                                    color: Colors.white),
+                                : const Icon(
+                                    Icons.text_fields_sharp,
+                                  ),
                             selected: segmentedControlGroupValue == 2,
                             onSelected: (bool selected) {
                               setState(() {

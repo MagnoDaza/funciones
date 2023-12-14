@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Sliver AppBarr Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         useMaterial3: true,
       ),
       home: MyHomePage(),
