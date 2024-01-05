@@ -18,6 +18,9 @@ class TabCreatorPage extends StatefulWidget {
 class _TabCreatorPageState extends State<TabCreatorPage> {
   @override
   Widget build(BuildContext context) {
+    double heightShowModalButton = MediaQuery.of(context).size.height * 0.9;
+    double widthShowModalButton = MediaQuery.of(context).size.width * 0.9;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Creador de DinamicsTabs'),
@@ -76,12 +79,11 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const TabDialog(isNewTab: true);
-                        },
-                      );
+                      ModalBottomSheet(
+                              isNewTab: true,
+                              height: heightShowModalButton,
+                              width: widthShowModalButton)
+                          .showModal(context);
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Nuevo'),
@@ -118,7 +120,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                       );
                     },
                     icon: const Icon(Icons.visibility),
-                    label: const Text('Mostrar Tabs'),
+                    label: const Text('Mostrar'),
                     style: ElevatedButton.styleFrom(),
                   ),
                 ],
@@ -152,7 +154,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                       );
                     },
                     icon: const Icon(Icons.sort),
-                    label: const Text('Organizar Tabs'),
+                    label: const Text('Organizar'),
                     style: ElevatedButton.styleFrom(),
                   ),
                 ],
@@ -215,12 +217,12 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                                       listen: false)
                                   .myTabs
                                   .indexOf(tabData);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return TabDialog(tabIndex: tabIndex);
-                                },
-                              );
+                              ModalBottomSheet(
+                                      isNewTab: false,
+                                      height: heightShowModalButton,
+                                      width: widthShowModalButton,
+                                      tabIndex: tabIndex)
+                                  .showModal(context);
                             },
                           ),
                           IconButton(
@@ -254,6 +256,34 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ModalBottomSheet {
+  final bool isNewTab;
+  final double height;
+  final double width;
+  final int? tabIndex;
+
+  ModalBottomSheet(
+      {required this.isNewTab,
+      required this.height,
+      required this.width,
+      this.tabIndex});
+
+  void showModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          height: isNewTab ? height : height,
+          width: width,
+          child: TabDialog(isNewTab: isNewTab, tabIndex: tabIndex),
+        );
+      },
     );
   }
 }

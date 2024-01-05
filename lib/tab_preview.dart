@@ -39,6 +39,7 @@ class TabPreview extends StatelessWidget {
         // Ajusta el ancho del tab según la longitud del texto
         final tabWidth = text.length < 4 ? 80.0 : text.length * 20.0;
         // Construye el widget
+        //
         return DefaultTabController(
           length: 1,
           child: Container(
@@ -48,21 +49,23 @@ class TabPreview extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Crea la barra de tabs
-                TabBar(
-                  tabs: [
-                    Tab(
-                      // Muestra el ícono si showIcon es verdadero
-                      icon: showIcon ? Icon(tabIcon, size: 24) : null,
-                      // Muestra el texto si showText es verdadero
-                      child: showText
-                          ? FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(text),
-                            )
-                          : null,
-                    ),
-                  ],
-                ),
+                Material(
+                  child: TabBar(
+                    tabs: [
+                      Tab(
+                        // Muestra el ícono si showIcon es verdadero
+                        icon: showIcon ? Icon(tabIcon, size: 24) : null,
+                        // Muestra el texto si showText es verdadero
+                        child: showText
+                            ? FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(text),
+                              )
+                            : null,
+                      ),
+                    ],
+                  ),
+                )
                 // Crea el indicador
               ],
             ),
