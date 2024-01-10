@@ -41,7 +41,6 @@ class TabPreview extends StatelessWidget {
                   child: TabBar(
                     indicatorSize: TabBarIndicatorSize.label,
                     dividerColor: Colors.transparent,
-                    enableFeedback: false,
                     tabs: [
                       Tab(
                         icon: showIcon ? Icon(tabIcon, size: 24) : null,
