@@ -73,10 +73,10 @@ class _TabDialogState extends State<TabDialog> {
       children: <Widget>[
         Divider(
           color: Colors.grey,
-          height: 10,
+          height: 4,
           thickness: 1,
           indent: 0,
-          endIndent: 2,
+          endIndent: 1,
         ),
         const Text(
           'Vista previa',
@@ -137,8 +137,8 @@ class _TabDialogState extends State<TabDialog> {
                           focusNode: _textFocusNode,
                           controller: _textController,
                           decoration: const InputDecoration(
-                            labelText: "El nombre del dinamicTab es...",
-                            hintText: "cha cha chaa chaaaan",
+                            labelText: "Name DinamicTab",
+                            hintText: "name",
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.edit_outlined),
                           ),
@@ -154,9 +154,11 @@ class _TabDialogState extends State<TabDialog> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 15),
-                        const Divider(),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 6),
+                        Divider(
+                          endIndent: 100,
+                        ),
+                        const SizedBox(height: 4),
                         const Text(
                           'Mostrar en el tab',
                           style: TextStyle(
@@ -164,92 +166,53 @@ class _TabDialogState extends State<TabDialog> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 15),
                         Wrap(
+                          alignment: WrapAlignment.spaceEvenly,
                           children: <Widget>[
-                            Container(
-                              child: Wrap(
-                                alignment: WrapAlignment.center,
-                                children: <Widget>[
-                                  ChoiceChip(
-                                    label: const Text(
-                                      'Icono y texto',
-                                    ),
-                                    avatar: segmentedControlGroupValue == 0
-                                        ? null
-                                        : const Icon(
-                                            Icons.auto_awesome_sharp,
-                                          ),
-                                    selected: segmentedControlGroupValue == 0,
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        segmentedControlGroupValue = selected
-                                            ? 0
-                                            : segmentedControlGroupValue;
-                                        if (widget.tabIndex != null &&
-                                            selected) {
-                                          tabProvider.updateTabShowText(
-                                              widget.tabIndex!, true);
-                                          tabProvider.updateTabShowIcon(
-                                              widget.tabIndex!, true);
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    label:
-                                        const Text('Icono', style: TextStyle()),
-                                    avatar: segmentedControlGroupValue == 1
-                                        ? null
-                                        : const Icon(
-                                            Icons.image,
-                                          ),
-                                    selected: segmentedControlGroupValue == 1,
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        segmentedControlGroupValue = selected
-                                            ? 1
-                                            : segmentedControlGroupValue;
-                                        if (widget.tabIndex != null &&
-                                            selected) {
-                                          tabProvider.updateTabShowText(
-                                              widget.tabIndex!, false);
-                                          tabProvider.updateTabShowIcon(
-                                              widget.tabIndex!, true);
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    label:
-                                        const Text('Texto', style: TextStyle()),
-                                    avatar: segmentedControlGroupValue == 2
-                                        ? null
-                                        : const Icon(
-                                            Icons.text_fields_sharp,
-                                          ),
-                                    selected: segmentedControlGroupValue == 2,
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        segmentedControlGroupValue = selected
-                                            ? 2
-                                            : segmentedControlGroupValue;
-                                        if (widget.tabIndex != null &&
-                                            selected) {
-                                          tabProvider.updateTabShowText(
-                                              widget.tabIndex!, true);
-                                          tabProvider.updateTabShowIcon(
-                                              widget.tabIndex!, false);
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
+                            CustomChoiceChip(
+                              label: 'Icono y texto',
+                              icon: Icons.auto_awesome_sharp,
+                              value: 0,
+                              onSelected: (value) {
+                                setState(() {
+                                  segmentedControlGroupValue = value;
+                                });
+                              },
+                              segmentedControlGroupValue:
+                                  segmentedControlGroupValue,
+                              tabIndex: widget.tabIndex,
+                              tabProvider: tabProvider,
+                            ),
+                            CustomChoiceChip(
+                              label: 'Icono',
+                              icon: Icons.image,
+                              value: 1,
+                              onSelected: (value) {
+                                setState(() {
+                                  segmentedControlGroupValue = value;
+                                });
+                              },
+                              segmentedControlGroupValue:
+                                  segmentedControlGroupValue,
+                              tabIndex: widget.tabIndex,
+                              tabProvider: tabProvider,
+                            ),
+                            CustomChoiceChip(
+                              label: 'Texto',
+                              icon: Icons.text_fields_sharp,
+                              value: 2,
+                              onSelected: (value) {
+                                setState(() {
+                                  segmentedControlGroupValue = value;
+                                });
+                              },
+                              segmentedControlGroupValue:
+                                  segmentedControlGroupValue,
+                              tabIndex: widget.tabIndex,
+                              tabProvider: tabProvider,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
                         const Divider(),
                         const SizedBox(height: 15),
                       ],
@@ -259,7 +222,7 @@ class _TabDialogState extends State<TabDialog> {
           ),
         )),
         Padding(
-          padding: EdgeInsets.only(bottom: 20.0),
+          padding: EdgeInsets.all(10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -302,5 +265,57 @@ class _TabDialogState extends State<TabDialog> {
         )
       ],
     )));
+  }
+}
+
+class CustomChoiceChip extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final int value;
+  final int? segmentedControlGroupValue;
+  final Function(int) onSelected;
+  final int? tabIndex;
+  final TabProvider tabProvider;
+
+  const CustomChoiceChip({
+    required this.label,
+    required this.icon,
+    required this.value,
+    required this.onSelected,
+    this.segmentedControlGroupValue,
+    this.tabIndex,
+    required this.tabProvider,
+  });
+
+  @override
+  _CustomChoiceChipState createState() => _CustomChoiceChipState();
+}
+
+class _CustomChoiceChipState extends State<CustomChoiceChip> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:
+          const EdgeInsets.all(5.0), // Ajusta este valor según tus necesidades
+      child: ChoiceChip(
+        label: Text(widget.label),
+        avatar: widget.segmentedControlGroupValue == widget.value
+            ? null
+            : Icon(widget.icon),
+        selected: widget.segmentedControlGroupValue == widget.value,
+        onSelected: (bool selected) {
+          setState(() {
+            widget.onSelected(
+                selected ? widget.value : widget.segmentedControlGroupValue!);
+            if (widget.tabIndex != null && selected) {
+              widget.tabProvider
+                  .updateTabShowText(widget.tabIndex!, widget.value != 1);
+              widget.tabProvider
+                  .updateTabShowIcon(widget.tabIndex!, widget.value != 2);
+            }
+          });
+        },
+      ),
+    );
   }
 }
