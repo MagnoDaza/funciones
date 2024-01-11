@@ -71,19 +71,9 @@ class _TabDialogState extends State<TabDialog> {
         child: Material(
             child: Column(
       children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            widget.isNewTab ? 'Crear un nuevo tab' : 'Editar Tab',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Divider(
           color: Colors.grey,
-          height: 20,
+          height: 10,
           thickness: 1,
           indent: 0,
           endIndent: 2,

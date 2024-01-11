@@ -18,7 +18,7 @@ class MyHomePage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 bottom: MyTabBar(tabs: tabProvider.myTabs),
-                title: Text('TabsDemo'),
+                title: const Text('TabsDemo'),
               ),
               body: MyTabBarView(tabs: tabProvider.myTabs),
               floatingActionButton: FloatingActionButton(
@@ -43,7 +43,7 @@ class MyTabBar extends PreferredSize {
 
   MyTabBar({required this.tabs})
       : super(
-            preferredSize: Size.fromHeight(kToolbarHeight),
+            preferredSize: const Size.fromHeight(kToolbarHeight),
             child: TabBar(
               dividerColor: Colors.transparent,
               isScrollable: true,

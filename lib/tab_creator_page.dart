@@ -6,6 +6,7 @@ import 'tab_provider.dart';
 import 'tabs_dialog.dart';
 import 'show_hide_tabs_page.dart';
 import 'tab_organizer_dialog.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TabCreatorPage extends StatefulWidget {
   final int? tabIndex;
@@ -18,9 +19,6 @@ class TabCreatorPage extends StatefulWidget {
 class _TabCreatorPageState extends State<TabCreatorPage> {
   @override
   Widget build(BuildContext context) {
-    double heightShowModalButton = MediaQuery.of(context).size.height * 0.9;
-    double widthShowModalButton = MediaQuery.of(context).size.width * 0.9;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Creador de DinamicsTabs'),
@@ -80,10 +78,8 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                   ElevatedButton.icon(
                     onPressed: () {
                       ModalBottomSheet(
-                              isNewTab: true,
-                              height: heightShowModalButton,
-                              width: widthShowModalButton)
-                          .showModal(context);
+                        isNewTab: true,
+                      ).showModal(context);
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Nuevo'),
@@ -218,10 +214,7 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
                                   .myTabs
                                   .indexOf(tabData);
                               ModalBottomSheet(
-                                      isNewTab: false,
-                                      height: heightShowModalButton,
-                                      width: widthShowModalButton,
-                                      tabIndex: tabIndex)
+                                      isNewTab: false, tabIndex: tabIndex)
                                   .showModal(context);
                             },
                           ),
@@ -262,28 +255,35 @@ class _TabCreatorPageState extends State<TabCreatorPage> {
 
 class ModalBottomSheet {
   final bool isNewTab;
-  final double height;
-  final double width;
+
   final int? tabIndex;
 
-  ModalBottomSheet(
-      {required this.isNewTab,
-      required this.height,
-      required this.width,
-      this.tabIndex});
+  ModalBottomSheet({
+    required this.isNewTab,
+    this.tabIndex,
+  });
 
   void showModal(BuildContext context) {
-    showModalBottomSheet(
+    showBarModalBottomSheet(
       context: context,
-      showDragHandle: true,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Container(
-          height: isNewTab ? height : height,
-          width: width,
-          child: TabDialog(isNewTab: isNewTab, tabIndex: tabIndex),
-        );
-      },
+      builder: (context) => Material(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Container(),
+            title: Text(isNewTab ? 'Crear un nuevo tab' : 'Editar Tab'),
+          ),
+          body: SafeArea(
+            bottom: false,
+            child: PageView(
+              children: [
+                TabDialog(isNewTab: isNewTab, tabIndex: tabIndex),
+
+                // Puedes agregar más páginas aquí
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

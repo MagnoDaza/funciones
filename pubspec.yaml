@@ -12,6 +12,7 @@ dependencies:
   provider:
   fluttertoast: ^8.2.2 
   cupertino_icons: ^1.0.6 # Asegúrate de usar la última versión
+  modal_bottom_sheet: ^3.0.0-pre
 
 
 

@@ -64,7 +64,7 @@ class TabData {
       tabWidth: tabWidth ?? this.tabWidth,
       containerSize: containerSize ?? this.containerSize,
       indicatorSize: indicatorSize ?? this.indicatorSize,
-      isDeletable: this.isDeletable,
+      isDeletable: isDeletable,
       textSize: textSize ?? this.textSize,
       segmentedControlGroupValue: segmentedControlGroupValue ??
           this.segmentedControlGroupValue, // Usa el valor proporcionado o el valor actual
