@@ -112,7 +112,7 @@ class _TabDialogState extends State<TabDialog> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Seleccionar el icono',
+                              'Select an icon',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
